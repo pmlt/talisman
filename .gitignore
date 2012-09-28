@@ -10,3 +10,11 @@
 *.lai
 *.la
 *.a
+
+# Visual Studio stuff
+*.suo
+*.user
+Talisman/Debug
+Talisman/Release
+TestDriver/Debug
+TestDriver/Release
