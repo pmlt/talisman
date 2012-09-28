@@ -18,3 +18,7 @@ Talisman/Debug
 Talisman/Release
 TestDriver/Debug
 TestDriver/Release
+
+# Eclipe stuff
+.cproject
+.project
