@@ -30,13 +30,13 @@ public:
     Method: name
     The name of the card
   */
-  virtual std::string name() = 0;
+  virtual std::string name() const = 0;
 
   /*
     Method: life
     Returns the current life amount of the character
   */
-  int life();
+  int life() const;
 
   /*
     Method: strength
@@ -44,7 +44,7 @@ public:
     means taking into account the base strength, strength tokens, equipment, 
     and current position on the map.
   */
-  int strength();
+  int strength() const;
 
   /*
     Method: craft
@@ -52,37 +52,37 @@ public:
     means taking into account the base craft, craft tokens, equipment, 
     and current position on the map.
   */
-  int craft();
+  int craft() const;
 
   /*
     Method: fate
     Returns the current number of fate tokens of the character.
   */
-  int fate();
+  int fate() const;
 
   /*
     Method: gold
     Returns the current number of gold tokens of the character.
   */
-  int gold();
+  int gold() const;
 
   /*
     Method: capacity
     Returns the carrying capacity of the character.
   */
-  unsigned int capacity();
+  unsigned int capacity() const;
 
   /*
     Method: position
     Returns the current tile that the character is on.
   */
-  MapTile* position();
+  MapTile* position() const;
 
   /*
     Method: isToad
     Check whether character has been transformed into a toad or not.
   */
-  bool isToad();
+  bool isToad() const;
   /*
     Method: transformIntoToad
     Transform character into toad.
@@ -183,7 +183,7 @@ class Warrior : public Character
 public:
   Warrior();
 
-  virtual std::string name() { return "Warrior"; }
+  virtual std::string name() const { return "Warrior"; }
 };
 
 /*
@@ -198,5 +198,5 @@ class Wizard : public Character
 public:
   Wizard();
   
-  virtual std::string name() { return "Wizard"; }
+  virtual std::string name() const { return "Wizard"; }
 };

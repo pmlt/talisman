@@ -18,7 +18,7 @@ public:
     This method MUST be overriden by child classes (it is part of the
     definition of the item).
   */
-  virtual int strength() = 0;
+  virtual int strength() const = 0;
   /*
     Method: craft
     Returns the craft modifier that this Object card confers to the
@@ -27,7 +27,7 @@ public:
     This method MUST be overriden by child classes (it is part of the
     definition of the item).
   */
-  virtual int craft() = 0;
+  virtual int craft() const = 0;
   /*
     Method: capacity
     Returns the capacity modifier that this Object card confers to the
@@ -36,7 +36,7 @@ public:
     This method MUST be overriden by child classes (it is part of the
     definition of the item).
   */
-  virtual int capacity() = 0;
+  virtual int capacity() const = 0;
 };
 
 /*
@@ -56,7 +56,7 @@ public:
     This method MUST be overriden by child classes (it is part of the
     definition of the weapon).
   */
-  virtual int getAttackBonus() = 0; //Bonus if USED in battle
+  virtual int getAttackBonus() const = 0; //Bonus if USED in battle
 };
 
 /*
@@ -75,7 +75,7 @@ public:
     This method MUST be overriden by child classes (it is part of the
     definition of the weapon).
   */
-  virtual int getLifeBonus() = 0;
+  virtual int getLifeBonus() const = 0;
 };
 
 /*
@@ -86,10 +86,10 @@ public:
 class Sword : public Weapon
 {
 public:
-  virtual int strength() { return 0; }
-  virtual int craft() { return 0; }
-  virtual int capacity() { return 0; }
-  virtual int getAttackBonus() { return 1; }
+  virtual int strength() const { return 0; }
+  virtual int craft() const { return 0; }
+  virtual int capacity() const { return 0; }
+  virtual int getAttackBonus() const { return 1; }
 };
 
 /*
@@ -100,10 +100,10 @@ public:
 class Axe : public Weapon
 {
 public:
-  virtual int strength() { return 2; }
-  virtual int craft() { return 0; }
-  virtual int capacity() { return 0; }
-  virtual int getAttackBonus() { return 0; }
+  virtual int strength() const { return 2; }
+  virtual int craft() const { return 0; }
+  virtual int capacity() const { return 0; }
+  virtual int getAttackBonus() const { return 0; }
 };
 
 /*
@@ -114,10 +114,10 @@ public:
 class Shield : public Armor
 {
 public:
-  virtual int strength() { return 0; }
-  virtual int craft() { return 0; }
-  virtual int capacity() { return 0; }
-  virtual int getLifeBonus() { return 1; }
+  virtual int strength() const { return 0; }
+  virtual int craft() const { return 0; }
+  virtual int capacity() const { return 0; }
+  virtual int getLifeBonus() const { return 1; }
 };
 
 /*
@@ -127,7 +127,7 @@ public:
 class Mule : public Item
 {
 public:
-  virtual int strength() { return 0; }
-  virtual int craft() { return 0; }
-  virtual int capacity() { return 4; }
+  virtual int strength() const { return 0; }
+  virtual int craft() const { return 0; }
+  virtual int capacity() const { return 4; }
 };
