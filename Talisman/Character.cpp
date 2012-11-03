@@ -111,6 +111,9 @@ void Character::recompute()
 
   // Take into account current position 
   // (TODO when the map part is implemented)
+
+  //Notify all observers
+  this->notify();
 }
 
 /******* CHARACTER OVERRIDES *********/

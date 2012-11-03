@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "TalismanGame.h"
+#include "CharacterPrinter.h"
 #include <iostream>
 
 using namespace std;
@@ -17,8 +18,11 @@ int _tmain(int argc, _TCHAR* argv[])
   Shield shield = Shield();
   Mule mule = Mule();
 
-  cout << "Warrior has strength of: " << war.strength() << endl;
-  cout << "Wizard has strength of: " << wiz.strength() << endl;
+  CharacterPrinter warprinter(war);
+  CharacterPrinter wizprinter(wiz);
+
+  war.notify();
+  wiz.notify();
   
   // Equip characters
   war.pickup(&axe);
@@ -26,8 +30,6 @@ int _tmain(int argc, _TCHAR* argv[])
   wiz.pickup(&sword);
   wiz.pickup(&mule);
 
-  cout << "Warrior has strength of: " << war.strength() << endl;
-  cout << "Wizard has strength of: " << wiz.strength() << endl;
 	return 0;
 }
 

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "TalismanGame.h"
+#include "Observable.h"
 #include <vector>
+#include <string>
 
 /*
   Class: Character
@@ -9,7 +11,7 @@
   The base class representing a Talisman character. All character types must
   inherit this class. 
 */
-class Character
+class Character : public Observable
 {
 public:
   /*
@@ -23,6 +25,12 @@ public:
   */
 	Character(int life, int strength, int craft, int fate);
 	virtual ~Character(void);
+
+  /*
+    Method: name
+    The name of the card
+  */
+  virtual std::string name() = 0;
 
   /*
     Method: life
@@ -162,6 +170,8 @@ class Warrior : public Character
 {
 public:
   Warrior();
+
+  virtual std::string name() { return "Warrior"; }
 };
 
 /*
@@ -175,4 +185,6 @@ class Wizard : public Character
 {
 public:
   Wizard();
+  
+  virtual std::string name() { return "Wizard"; }
 };
