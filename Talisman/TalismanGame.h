@@ -8,3 +8,4 @@
 #include "Talisman.h"
 #include "Follower.h"
 #include "Character.h"
+#include "CharacterCommand.h"

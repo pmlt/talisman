@@ -15,7 +15,7 @@ Character::Character(int life, int strength, int craft, int fate) :
     gold_counters(1), 
     is_toad(false), 
     base_capacity(DEFAULT_CAPACITY),
-    position(0)
+    _position(NULL)
 {
   recompute();
 }
@@ -30,6 +30,7 @@ int Character::craft() { return this->effective_craft; }
 int Character::fate() { return this->fate_counters; }
 int Character::gold() { return this->gold_counters; }
 unsigned int Character::capacity() { return this->effective_capacity; }
+MapTile* Character::position() { return this->_position; }
 
 bool Character::isToad() { return this->is_toad; }
 void Character::transformIntoToad()
@@ -37,10 +38,15 @@ void Character::transformIntoToad()
   this->is_toad = 1;
   this->recompute();
 }
+void Character::transformBack()
+{
+  this->is_toad = 0;
+  this->recompute();
+}
 
 void Character::move(MapTile* new_position)
 {
-  this->position = new_position;
+  this->_position = new_position;
   this->recompute();
 }
 

@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="CharacterCommand.h" />
     <ClInclude Include="Follower.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MapTile.h" />
@@ -85,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CharacterCommand.cpp" />
     <ClCompile Include="Follower.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="MapTile.cpp" />
