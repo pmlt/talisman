@@ -73,6 +73,12 @@ public:
   unsigned int capacity();
 
   /*
+    Method: position
+    Returns the current tile that the character is on.
+  */
+  MapTile* position();
+
+  /*
     Method: isToad
     Check whether character has been transformed into a toad or not.
   */
@@ -82,6 +88,12 @@ public:
     Transform character into toad.
   */
   void transformIntoToad();
+
+  /*
+    Method: transformBack
+    Reverts Toad state.
+  */
+  void transformBack();
 
   /*
     Method: move
@@ -151,7 +163,7 @@ private:
   unsigned int effective_capacity;
   bool is_toad;
 
-  MapTile* position;
+  MapTile* _position;
 
   std::vector<Item*> inventory;
   std::vector<Spell*> spells;
