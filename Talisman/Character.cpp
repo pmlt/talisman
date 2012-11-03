@@ -24,15 +24,15 @@ Character::~Character(void)
 {
 }
 
-int Character::life() { return this->life_counters; }
-int Character::strength() { return this->effective_strength; }
-int Character::craft() { return this->effective_craft; }
-int Character::fate() { return this->fate_counters; }
-int Character::gold() { return this->gold_counters; }
-unsigned int Character::capacity() { return this->effective_capacity; }
-MapTile* Character::position() { return this->_position; }
+int Character::life() const { return this->life_counters; }
+int Character::strength() const { return this->effective_strength; }
+int Character::craft() const { return this->effective_craft; }
+int Character::fate() const { return this->fate_counters; }
+int Character::gold() const { return this->gold_counters; }
+unsigned int Character::capacity() const { return this->effective_capacity; }
+MapTile* Character::position() const { return this->_position; }
 
-bool Character::isToad() { return this->is_toad; }
+bool Character::isToad() const { return this->is_toad; }
 void Character::transformIntoToad()
 {
   this->is_toad = 1;
