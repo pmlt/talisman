@@ -8,6 +8,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestDriver", "TestDriver\Te
 		{6C0511A6-F5CA-43DC-9478-D97B49B44C9C} = {6C0511A6-F5CA-43DC-9478-D97B49B44C9C}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TalismanConsole", "TalismanConsole\TalismanConsole.vcxproj", "{DE8626BC-DAA1-4029-8FA9-441DB1E5A0C3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6C0511A6-F5CA-43DC-9478-D97B49B44C9C} = {6C0511A6-F5CA-43DC-9478-D97B49B44C9C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +27,10 @@ Global
 		{1C0B4E2B-3064-4F8F-9166-9D4B2C3FA11B}.Debug|Win32.Build.0 = Debug|Win32
 		{1C0B4E2B-3064-4F8F-9166-9D4B2C3FA11B}.Release|Win32.ActiveCfg = Release|Win32
 		{1C0B4E2B-3064-4F8F-9166-9D4B2C3FA11B}.Release|Win32.Build.0 = Release|Win32
+		{DE8626BC-DAA1-4029-8FA9-441DB1E5A0C3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DE8626BC-DAA1-4029-8FA9-441DB1E5A0C3}.Debug|Win32.Build.0 = Debug|Win32
+		{DE8626BC-DAA1-4029-8FA9-441DB1E5A0C3}.Release|Win32.ActiveCfg = Release|Win32
+		{DE8626BC-DAA1-4029-8FA9-441DB1E5A0C3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
