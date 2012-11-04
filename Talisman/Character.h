@@ -27,6 +27,12 @@ public:
 	virtual ~Character(void);
 
   /*
+    Method: createFromFile
+    Construct new Character object from a file.
+  */
+  static Character* createFromFile(string character_file);
+
+  /*
     Method: name
     The name of the card
   */

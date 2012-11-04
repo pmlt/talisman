@@ -24,6 +24,12 @@ Character::~Character(void)
 {
 }
 
+Character* Character::createFromFile(string character_file)
+{
+  // Read file and create character from this
+  return NULL;
+}
+
 int Character::life() const { return this->life_counters; }
 int Character::strength() const { return this->effective_strength; }
 int Character::craft() const { return this->effective_craft; }
