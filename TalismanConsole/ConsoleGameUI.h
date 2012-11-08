@@ -10,6 +10,7 @@ public:
   ConsoleGameUI(Game &game);
   virtual ~ConsoleGameUI(void);
 
+  virtual unsigned int prompt(string msg, string options[], unsigned int options_size);
   virtual void notify();
 };
 
