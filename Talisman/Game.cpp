@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Game.h"
+#include <time.h>
 
 Game::Game(void)
 {
@@ -59,8 +60,8 @@ AdventureCard* Game::drawAdventureCard()
 
 unsigned char Game::roll() const
 {
-  //Generate random number between 1 and 6 and return it
-  return 1;
+  srand(time(NULL));
+  return (rand() % 6) + 1;;
 }
 
 void Game::start()

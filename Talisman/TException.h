@@ -24,3 +24,10 @@ class NotInInventoryException : public TException {};
   his inventory is already full.
 */
 class InventoryFullException : public TException {};
+
+/*
+  Class: PlayerNotFoundException
+  Occurs when the game tries to remove a player that is not
+  currently playing.
+*/
+class PlayerNotFoundException : public TException {};
