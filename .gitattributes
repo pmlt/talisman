@@ -1,0 +1,11 @@
+# Set default behaviour, in case users don't have core.autocrlf set.
+* binary
+
+# Explicitly declare text files we want to always be normalized and converted 
+# to native line endings on checkout.
+*.cpp text eol=lf
+*.h text eol=lf
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+
