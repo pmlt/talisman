@@ -10,7 +10,7 @@ Game::~Game(void)
 {
 }
 
-Game* Game::create(string map_file, string character_file, string card_file)
+Game* Game::init(string map_file, string character_file, string card_file)
 {
   //Create Game object
   //Create Board object from map_file
@@ -19,6 +19,11 @@ Game* Game::create(string map_file, string character_file, string card_file)
   //Attach all three objects to the Game object
   //Return Game object
   return NULL;
+}
+
+Game* Game::instance()
+{
+  return Game::inst;
 }
 
 void Game::destroy(Game* game)
