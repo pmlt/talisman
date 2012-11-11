@@ -28,7 +28,7 @@ public:
     Return:
       The index of the chosen option.
   */
-  virtual unsigned int prompt(string msg, string options[], unsigned int options_size);
+  virtual unsigned int prompt(string msg, string options[], unsigned int options_size) = 0;
 
   /*
     Method: notify
