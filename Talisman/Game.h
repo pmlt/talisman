@@ -26,12 +26,6 @@ public:
   static Game* init(string map_file, string character_file, string card_file);
 
   /*
-    Method: instance
-    Returns the Game instance.
-  */
-  static Game* instance();
-
-  /*
     Method: destroy
     Destroy the game instance.
   */
@@ -102,8 +96,6 @@ public:
 private:
   Game(void);
   ~Game(void);
-
-  static Game* inst;
 
   GameUI* ui;
   vector<Character*> players;

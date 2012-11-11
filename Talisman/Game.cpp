@@ -13,17 +13,19 @@ Game::~Game(void)
 Game* Game::init(string map_file, string character_file, string card_file)
 {
   //Create Game object
+  Game* _inst = new Game();
+  
   //Create Board object from map_file
+  _inst->board = Board::createFromFile(map_file);
+  
   //Create Character object from character_file
-  //Create card deck from card_file
-  //Attach all three objects to the Game object
-  //Return Game object
-  return NULL;
-}
+  //Character::createFromFile(character_file, &(_inst->players));
 
-Game* Game::instance()
-{
-  return Game::inst;
+  //Create card deck from card_file
+  //AdventureCard::createDeckFromFile(card_file, &(_inst->adventure_deck));
+
+  //Return Game object
+  return _inst;
 }
 
 void Game::destroy(Game* game)
