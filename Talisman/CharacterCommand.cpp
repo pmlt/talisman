@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CharacterCommand.h"
+#include "Character.h"
 
 
 CharacterCommand::CharacterCommand(Character &subject) :
@@ -12,7 +13,7 @@ CharacterCommand::~CharacterCommand(void)
 {
 }
 
-GiveItem::GiveItem(Character &subject, Item &item) :
+GiveItem::GiveItem(Character &subject, ObjectCard &item) :
   CharacterCommand(subject),
   item(&item)
 {
@@ -28,23 +29,7 @@ void GiveItem::revert()
   this->subject->drop(this->item);
 }
 
-GiveTalisman::GiveTalisman(Character &subject, Talisman &t) :
-  CharacterCommand(subject),
-  talisman(&t)
-{
-}
-
-void GiveTalisman::execute()
-{
-  this->subject->pickup(this->talisman);
-}
-
-void GiveTalisman::revert()
-{
-  this->subject->drop(this->talisman);
-}
-
-DropItem::DropItem(Character &subject, Item &item) :
+DropItem::DropItem(Character &subject, ObjectCard &item) :
   CharacterCommand(subject),
   item(&item)
 {
@@ -58,22 +43,6 @@ void DropItem::execute()
 void DropItem::revert()
 {
   this->subject->pickup(this->item);
-}
-
-DropTalisman::DropTalisman(Character &subject, Talisman &t) :
-  CharacterCommand(subject),
-  talisman(&t)
-{
-}
-
-void DropTalisman::execute()
-{
-  this->subject->drop(this->talisman);
-}
-
-void DropTalisman::revert()
-{
-  this->subject->pickup(this->talisman);
 }
 
 TransformIntoToad::TransformIntoToad(Character &subject) : 

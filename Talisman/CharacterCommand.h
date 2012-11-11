@@ -1,5 +1,6 @@
 #pragma once
-#include "TalismanGame.h"
+#include "AdventureCard.h"
+#include "MapTile.h"
 
 class Character; //Temporary declaration just to compile
 
@@ -37,29 +38,14 @@ protected:
 class GiveItem : public CharacterCommand
 {
 public:
-  GiveItem(Character &subject, Item &item);
+  GiveItem(Character &subject, ObjectCard &item);
 
   virtual void execute();
   virtual void revert();
 private:
-  Item *item;
+  ObjectCard *item;
 };
 
-/*
-  Class: GiveTalisman
-  Give a talisman to a character. Undoing this operation
-  removes the talisman from the character.
-*/
-class GiveTalisman : public CharacterCommand
-{
-public:
-  GiveTalisman(Character &subject, Talisman &talisman);
-
-  virtual void execute();
-  virtual void revert();
-private:
-  Talisman *talisman;
-};
 
 /*
   Class: DropItem
@@ -69,29 +55,14 @@ private:
 class DropItem : public CharacterCommand
 {
 public:
-  DropItem(Character &subject, Item &item);
+  DropItem(Character &subject, ObjectCard &item);
 
   virtual void execute();
   virtual void revert();
 private:
-  Item *item;
+  ObjectCard *item;
 };
 
-/*
-  Class: DropTalisman
-  Remove a talisman from a character's inventory. Undoing this
-  operation will give the talisman back to the character.
-*/
-class DropTalisman : public CharacterCommand
-{
-public:
-  DropTalisman(Character &subject, Talisman &talisman);
-
-  virtual void execute();
-  virtual void revert();
-private:
-  Talisman *talisman;
-};
 
 /*
   Class: TransformIntoToad
