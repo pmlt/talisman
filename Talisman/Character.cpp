@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 #include "Character.h"
 
+#include <iostream>
+#include <fstream>
+
 Character::Character(int life, int strength, int craft, int fate) : 
     life_counters(life), 
     starting_life(life),
@@ -24,10 +27,29 @@ Character::~Character(void)
 {
 }
 
-Character* Character::createFromFile(string character_file)
+void Character::createFromFile(string character_file, std::vector<Character*> &v)
 {
   // Read file and create character from this
-  return NULL;
+  
+  ifstream file;
+  file.open(character_file);
+  if (file.is_open()) {
+    string line;
+    Character* c;
+    while (file.good()) {
+      getline(file, line);
+      if (line.size() <= 0) continue; //Empty line
+      if (line[0] == ';') continue; //Comment line
+      if (line == "Warrior") c = new Warrior();
+      else if (line == "Wizard") c = new Wizard();
+      else throw new InvalidCharacterFileException(line);
+      v.push_back(c);
+    }
+  }
+  else {
+    throw new FileOpenException(character_file);
+  }
+  file.close();
 }
 
 int Character::life() const { return this->life_counters; }
@@ -130,5 +152,5 @@ void Character::recompute()
 
 /******* CHARACTER OVERRIDES *********/
 
-Warrior::Warrior() : Character(4, 4, 2, 1) {}
-Wizard::Wizard() : Character(2, 1, 4, 2) {}
+Warrior::Warrior() : Character(5, 4, 2, 1) {}
+Wizard::Wizard() : Character(4, 2, 5, 3) {}

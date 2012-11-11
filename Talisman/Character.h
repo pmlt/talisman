@@ -28,9 +28,9 @@ public:
 
   /*
     Method: createFromFile
-    Construct new Character object from a file.
+    Add a series of constructed characters to a vector from a file
   */
-  static Character* createFromFile(string character_file);
+  static void createFromFile(std::string character_file, std::vector<Character*> &v);
 
   /*
     Method: name
@@ -77,6 +77,12 @@ public:
     Returns the carrying capacity of the character.
   */
   unsigned int capacity() const;
+
+  /*
+    Method: startPosition
+    Returns the starting position of the character.
+  */
+  virtual std::string startPosition() const = 0;
 
   /*
     Method: position
@@ -190,6 +196,7 @@ public:
   Warrior();
 
   virtual std::string name() const { return "Warrior"; }
+  virtual std::string startPosition() const { return "Tavern"; }
 };
 
 /*
@@ -205,4 +212,5 @@ public:
   Wizard();
   
   virtual std::string name() const { return "Wizard"; }
+  virtual std::string startPosition() const { return "Graveyard"; }
 };
