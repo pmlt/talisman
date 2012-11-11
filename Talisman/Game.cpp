@@ -123,11 +123,3 @@ bool Game::isFinished()
   //Return true if a player has won
   return 0;
 }
-
-bool Game::isFinished()
-{
-  //Inspect victory conditions
-  //Return true if a player has won
-  return 0;
-}
-
