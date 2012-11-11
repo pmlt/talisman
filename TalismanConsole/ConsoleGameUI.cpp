@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ConsoleGameUI.h"
 #include <iostream>
+#include <string>
+#include <iomanip>
 
 ConsoleGameUI::ConsoleGameUI(Game &game) :
   GameUI(game)
@@ -51,4 +53,58 @@ unsigned int ConsoleGameUI::prompt(string msg, string options[], unsigned int op
 void ConsoleGameUI::notify()
 {
   //Redraw screen here! You have access to the whole game information from this->game
+
+  string str;
+  system("cls");
+
+  //Set top bar
+  cout << " ";
+  for (int i = 0; i < 6; ++i)
+    cout << "_____________________";
+  cout << "____________________" << endl;
+  
+  //Rows = i. Columns = j.
+  for (int i = 0; i < 7; ++i)
+  {
+    //First
+    for (int j = 0; j < 7; ++j)
+    {
+      cout << "|" << setw(20);
+      str = this->game->getBoard()->getTiles()[i][j]->getTitle();
+      cout << str + string((20 - str.length()) / 2, ' ');
+    }
+    cout << "|" << endl;
+
+    //Second
+    for (int j = 0; j < 7; ++j)
+    {
+      cout << "|" << setw(21);
+      //Check for players
+    }
+    cout << "|" << endl;
+
+    //Third
+    for (int j = 0; j < 7; ++j)
+    {
+      cout << "|" << setw(21);
+      //Check for cards
+    }
+    cout << "|" << endl;
+
+    //Fourth
+    for (int j = 0; j < 7; ++j)
+    {
+      cout << "|" << setw(21);
+      //Unused so far
+    }
+    cout << "|" << endl;
+
+    //Fifth
+    for (int j = 0; j < 7; ++j)
+    {
+      cout << "|____________________";
+    }
+    cout << "|" << endl;
+
+  }
 }

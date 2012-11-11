@@ -6,6 +6,8 @@
 #include "Game.h"
 #include <string>
 #include <iostream>
+#include <windows.h>
+#include <Wincon.h>
 
 using namespace std;
 
@@ -16,6 +18,8 @@ void print_usage()
 
 int main(int argc, char* argv[])
 {
+  system("MODE 200,50");
+
   Game* game = NULL;
   string map_file;
   string character_file;
