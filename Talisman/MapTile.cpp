@@ -3,7 +3,7 @@
 
 
 MapTile::MapTile() :
-  top(NULL),right(NULL),bottom(NULL),left(NULL),inward_bridge(NULL),outward_bridge(NULL)
+  cw(NULL),ccw(NULL)
 {
 }
 
@@ -12,15 +12,11 @@ MapTile::~MapTile(void)
 {
 }
 
-void MapTile::setNeighbors(MapTile* top, MapTile* right, MapTile* bottom, MapTile* left)
+void MapTile::setNeighbors(MapTile* cw, MapTile* ccw)
 {
-  this->top = top;
-  this->right = right;
-  this->bottom = bottom;
-  this->left = left;
+  this->cw = cw;
+  this->ccw = ccw;
 }
-void MapTile::setInwardBridge(MapTile* bridge) { this->inward_bridge = bridge; }
-void MapTile::setOutwardBridge(MapTile* bridge) { this->outward_bridge = bridge; }
 
 unsigned char MapTile::rollMovement()
 {
@@ -43,6 +39,8 @@ string HillsTile::getTitle() const { return "Hills"; }
 string ChapelTile::getTitle() const { return "Chapel"; }
 
 string CragsTile::getTitle() const { return "Crags"; }
+
+string PlainsTile::getTitle() const { return "Plains"; }
 
 string CityTile::getTitle() const { return "City"; }
 
