@@ -1,7 +1,11 @@
 #include "stdafx.h"
+#include <iostream>
+#include <fstream>
 #include "Board.h"
-
 #include "MapTile.h"
+#include "TException.h"
+
+#define ASCII0 48;
 
 Board::Board(void)
 {
@@ -15,7 +19,69 @@ Board::~Board(void)
 Board* Board::createFromFile(string map_file)
 {
   // Read file and construct and arrange tiles from the file
-  return NULL;
+  string line;
+  unsigned int x,y;
+  string ident;
+  MapTile *tile;
+
+  Board* b = new Board();
+
+  ifstream maphandle;
+  maphandle.open(map_file, ios::in);
+  if (maphandle.is_open()) {
+    while (maphandle.good()) {
+      getline(maphandle, line);
+      if (line.size() <= 0) continue; //Empty line
+      if (line[0] == ';') continue; //Comment line
+      x = line[0] - ASCII0;
+      y = line[1] - ASCII0;
+      if (x > (BOARD_ROWS - 1) ||
+          y > (BOARD_COLS - 1) ||
+          line[2] != ' ') {
+        throw new InvalidMapFileException();
+      }
+      ident = line.substr(3);
+      if (ident == "VillageTile") tile = new VillageTile();
+      else if (ident == "FieldsTile") tile = new FieldsTile();
+      else if (ident == "GraveyardTile") tile = new GraveyardTile();
+      else if (ident == "WoodsTile") tile = new WoodsTile();
+      else if (ident == "SentinelTile") tile = new SentinelTile();
+      else if (ident == "HillsTile") tile = new HillsTile();
+      else if (ident == "ChapelTile") tile = new ChapelTile();
+      else if (ident == "CragsTile") tile = new CragsTile();
+      else if (ident == "CityTile") tile = new CityTile();
+      else if (ident == "TavernTile") tile = new TavernTile();
+      else if (ident == "RuinsTile") tile = new RuinsTile();
+      else if (ident == "ForestTile") tile = new ForestTile();
+      else if (ident == "PortalOfPowerTile") tile = new PortalOfPowerTile();
+      else if (ident == "BlackKnightTile") tile = new BlackKnightTile();
+      else if (ident == "HiddenValleyTile") tile = new HiddenValleyTile();
+      else if (ident == "CursedGladeTile") tile = new CursedGladeTile();
+      else if (ident == "RunesTile") tile = new RunesTile();
+      else if (ident == "ChasmTile") tile = new ChasmTile();
+      else if (ident == "WarlocksCaveTile") tile = new WarlocksCaveTile();
+      else if (ident == "DesertTile") tile = new DesertTile();
+      else if (ident == "OasisTile") tile = new OasisTile();
+      else if (ident == "TempleTile") tile = new TempleTile();
+      else if (ident == "CastleTile") tile = new CastleTile();
+      else if (ident == "PlainsOfPerilTile") tile = new PlainsOfPerilTile();
+      else if (ident == "MinesTile") tile = new MinesTile();
+      else if (ident == "VampiresTowerTile") tile = new VampiresTowerTile();
+      else if (ident == "PitsTile") tile = new PitsTile();
+      else if (ident == "ValleyOfFireTile") tile = new ValleyOfFireTile();
+      else if (ident == "WerewolfDenTile") tile = new WerewolfDenTile();
+      else if (ident == "DeathTile") tile = new DeathTile();
+      else if (ident == "CryptTile") tile = new CryptTile();
+      else if (ident == "OasisTile") tile = new OasisTile();
+      else if (ident == "OasisTile") tile = new OasisTile();
+      else if (ident == "OasisTile") tile = new OasisTile();
+      else throw InvalidMapFileException();
+
+      b->tiles[x][y] = tile;
+    }
+  }
+  maphandle.close();
+  return b;
 }
 
 MapTile*** Board::getTiles() const { return (MapTile***)this->tiles; }
