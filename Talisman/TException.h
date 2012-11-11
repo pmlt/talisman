@@ -38,3 +38,9 @@ class PlayerNotFoundException : public TException {};
   already currently playing.
 */
 class PlayerExistsException : public TException {};
+
+/*
+  Class: InvalidMapFileException
+  Occurs whenever a bad file was passed to Board::from_file.
+*/
+class InvalidMapFileException : public TException {};
