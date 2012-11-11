@@ -123,3 +123,4 @@ bool Game::isFinished()
   //Return true if a player has won
   return 0;
 }
+

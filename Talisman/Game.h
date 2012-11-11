@@ -110,4 +110,3 @@ private:
   Board* board;
   stack<AdventureCard*> adventure_deck;
 };
-
