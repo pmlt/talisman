@@ -5,6 +5,9 @@
 
 using namespace std;
 
+class Character;
+class Game;
+
 /*
   Class: MapTile
   Represents a location on the board. Dummy class to help model Character for now.
@@ -19,7 +22,28 @@ public:
   
   void setNeighbors(MapTile* cw, MapTile* ccw);
 
-  unsigned char rollMovement();
+  unsigned char rollMovement(Character *character, Game *game);
+
+  /*
+    Method: start
+    Start a character's turn on this tile.
+  */
+  virtual void start(Character* character, Game* game);
+  /*
+    Method: leave
+    Callback for when a character leaves the tile he started in on this turn.
+  */
+  virtual void leave(Character* character, Game* game, unsigned int movement, unsigned int direction);
+  /*
+    Method: step
+    Callback for when a character steps on a tile on his way to another one.
+  */
+  virtual void step(Character* character, Game* game, unsigned int movement_left, unsigned int direction);
+  /*
+    Method: land
+    Callback for when a character lands on a tile (his final destination).
+  */
+  virtual void land(Character *character, Game* game);
 
 private:
   MapTile* cw;

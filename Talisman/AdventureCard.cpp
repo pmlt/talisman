@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "AdventureCard.h"
 #include "TException.h"
-#include <queue>
+#include <stack>
 #include <iostream>
 #include <fstream>
 
@@ -16,7 +16,7 @@ AdventureCard::~AdventureCard(void)
 {
 }
 
-void AdventureCard::createDeckFromFile(std::string deck_file, std::queue<AdventureCard*> &deck)
+void AdventureCard::createDeckFromFile(std::string deck_file, std::stack<AdventureCard*> &deck)
 {
   //Read file and create deck
   ifstream file;

@@ -17,6 +17,12 @@ public:
   virtual ~GameUI(void);
 
   /*
+    Method: announce
+    Announce something to the player, not requiring any feedback.
+  */
+  virtual void announce(string msg) = 0;
+
+  /*
     Method: prompt
     Prompt the user to make a choice from a collection of options.
 

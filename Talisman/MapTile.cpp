@@ -1,6 +1,11 @@
 #include "StdAfx.h"
 #include "MapTile.h"
+#include "Character.h"
+#include "Game.h"
+#include "CharacterCommand.h"
+#include <sstream>
 
+using namespace std;
 
 MapTile::MapTile() :
   cw(NULL),ccw(NULL)
@@ -18,10 +23,62 @@ void MapTile::setNeighbors(MapTile* cw, MapTile* ccw)
   this->ccw = ccw;
 }
 
-unsigned char MapTile::rollMovement()
+unsigned char MapTile::rollMovement(Character *character, Game *game)
 {
   //Random number between 1 and 6
-  return 1;
+  return game->roll();
+}
+
+void MapTile::start(Character *character, Game* game)
+{
+  //Redraw
+  game->notify();
+
+  //Roll how much for movement
+  unsigned char movement = this->rollMovement(character, game);
+  stringstream smov;
+  smov << (int)movement;
+
+  //Prompt for which direction.
+  string opts[2] = {
+    "Clockwise",
+    "Counter-clockwise"
+  };
+  unsigned int direction = game->getUI()->prompt("You rolled a " + smov.str() + "! Which direction do you want to go", opts, 2);
+
+  //Go!
+  this->leave(character, game, movement, direction);
+}
+
+void MapTile::leave(Character* character, Game* game, unsigned int movement, unsigned int direction)
+{
+  //Simply move out by default
+  this->step(character, game, movement, direction);
+}
+
+void MapTile::step(Character *character, Game* game, unsigned int movement, unsigned int direction)
+{
+  if (movement == 0) {
+    this->land(character, game);
+    return;
+  }
+  if (direction == 1) {
+    //Clockwise
+    this->cw->step(character, game, movement - 1, direction);
+  }
+  else {
+    //Counter-clockwise
+    this->cw->step(character, game, movement - 1, direction);
+  }
+}
+
+void MapTile::land(Character* character, Game* game)
+{
+  game->getUI()->announce("You have arrived at the " + this->getTitle() + "... Your turn is over.");
+  //Set the new position
+  character->move(this);
+  //Redraw
+  game->notify();
 }
 
 string VillageTile::getTitle() const { return "Village"; }

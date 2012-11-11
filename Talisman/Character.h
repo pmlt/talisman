@@ -10,6 +10,8 @@
 
 #define DEFAULT_CAPACITY 4
 
+class MapTile;
+
 /*
   Class: Character
 

@@ -2,7 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "TalismanGame.h"
+#include "Character.h"
+#include "CharacterCommand.h"
 #include "CharacterPrinter.h"
 #include <iostream>
 #include <stack>
@@ -12,11 +13,12 @@ using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+  /*
   stack<CharacterCommand*> commands;
   Warrior war = Warrior();
   Wizard wiz = Wizard();
-  Sword sword = Sword();
-  Axe axe = Axe();
+  Sword sword = SwordCard();
+  Axe axe = AxeCard();
   Shield shield = Shield();
   Mule mule = Mule();
 
@@ -54,6 +56,7 @@ int _tmain(int argc, _TCHAR* argv[])
     cmd->revert();
     commands.pop();
   }
+  */
 
 	return 0;
 }

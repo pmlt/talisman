@@ -5,6 +5,8 @@
 
 #include "MapTile.h"
 
+class MapTile;
+
 class Board
 {
 public:
