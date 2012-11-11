@@ -9,6 +9,11 @@
 
 Board::Board(void)
 {
+  for (int i=0; i < BOARD_ROWS; i++) {
+    for (int j=0; j < BOARD_COLS; j++) {
+      this->tiles[i][j] = NULL;
+    }
+  }
 }
 
 
@@ -38,7 +43,7 @@ Board* Board::createFromFile(string map_file)
       if (x > (BOARD_ROWS - 1) ||
           y > (BOARD_COLS - 1) ||
           line[2] != ' ') {
-        throw new InvalidMapFileException();
+        throw new InvalidMapFileException(line);
       }
       ident = line.substr(3);
       if (ident == "VillageTile") tile = new VillageTile();
@@ -49,6 +54,7 @@ Board* Board::createFromFile(string map_file)
       else if (ident == "HillsTile") tile = new HillsTile();
       else if (ident == "ChapelTile") tile = new ChapelTile();
       else if (ident == "CragsTile") tile = new CragsTile();
+      else if (ident == "PlainsTile") tile = new PlainsTile();
       else if (ident == "CityTile") tile = new CityTile();
       else if (ident == "TavernTile") tile = new TavernTile();
       else if (ident == "RuinsTile") tile = new RuinsTile();
@@ -72,15 +78,85 @@ Board* Board::createFromFile(string map_file)
       else if (ident == "WerewolfDenTile") tile = new WerewolfDenTile();
       else if (ident == "DeathTile") tile = new DeathTile();
       else if (ident == "CryptTile") tile = new CryptTile();
-      else if (ident == "OasisTile") tile = new OasisTile();
-      else if (ident == "OasisTile") tile = new OasisTile();
-      else if (ident == "OasisTile") tile = new OasisTile();
-      else throw InvalidMapFileException();
+      else throw new InvalidMapFileException(line);
 
       b->tiles[x][y] = tile;
     }
   }
+  else {
+    throw new InvalidMapFileException();
+  }
   maphandle.close();
+  //Set neighbors for each tile.
+  for (int i=0; i < BOARD_ROWS; i++) {
+    for (int j=0; j < BOARD_COLS; j++) {
+      if (b->tiles[i][j] == NULL) continue;
+
+      MapTile* cw;
+      MapTile* ccw;
+      int min_i = 0;
+      int min_j = 0;
+      int max_i = BOARD_ROWS-1;
+      int max_j = BOARD_COLS-1;
+
+      //Find the region we're in
+      while (i != min_i && i != max_i && j != min_j && j != max_j) {
+        min_i++;
+        max_i--;
+        min_j++;
+        max_j--;
+      }
+      //Find cw
+      if (i == min_i) {
+        if (j == min_j) {
+          //Top-left corner
+          cw = b->tiles[i+1][j];
+          ccw = b->tiles[i][j+1];
+        }
+        else if (j > min_j && j < max_j) {
+          //Top row, in the middle
+          cw = b->tiles[i+1][j];
+          ccw = b->tiles[i-1][j];
+        }
+        else {
+          //Top-right corner
+          cw = b->tiles[i][j+1];
+          ccw = b->tiles[i-1][j];
+        }
+      }
+      else if (i > min_i && i < max_i) {
+        if (j == min_j) {
+          //Left column, in the middle
+          cw = b->tiles[i][j-1];
+          ccw = b->tiles[i][j+1];
+        }
+        else {
+          //Right column, in the middle
+          cw = b->tiles[i][j+1];
+          ccw = b->tiles[i][j-1];
+        }
+      }
+      else {
+        if (j == min_j) {
+          //Bottom-left corner
+          cw = b->tiles[i][j-1];
+          ccw = b->tiles[i+1][j];
+        }
+        else if (j > min_j && j < max_j) {
+          //Bottom row, in the middle
+          cw = b->tiles[i-1][j];
+          ccw = b->tiles[i+1][j];
+        }
+        else {
+          //Bottom-right corner
+          cw = b->tiles[i-1][j];
+          ccw = b->tiles[i][j-1];
+        }
+      }
+      
+      b->tiles[i][j]->setNeighbors(cw, ccw);
+    }
+  }
   return b;
 }
 

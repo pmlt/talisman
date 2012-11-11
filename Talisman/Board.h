@@ -11,7 +11,7 @@ public:
   Board(void);
   ~Board(void);
 
-  Board* createFromFile(string map_file);
+  static Board* createFromFile(string map_file);
 
   (MapTile ***) getTiles() const;
   

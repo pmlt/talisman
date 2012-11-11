@@ -17,40 +17,25 @@ public:
 
   virtual string getTitle() const = 0;
   
-  void setNeighbors(MapTile* top, MapTile* right, MapTile* bottom, MapTile* left);
-  void setInwardBridge(MapTile* bridge);
-  void setOutwardBridge(MapTile* bridge);
+  void setNeighbors(MapTile* cw, MapTile* ccw);
 
   unsigned char rollMovement();
 
 private:
-  MapTile* top;
-  MapTile* left;
-  MapTile* bottom;
-  MapTile* right;
-  MapTile* inward_bridge;
-  MapTile* outward_bridge;
+  MapTile* cw;
+  MapTile* ccw;
 };
 
 class OuterMapTile : public MapTile
 {
-public:
-  OuterMapTile();
-  virtual ~OuterMapTile();
 };
 
 class MiddleMapTile : public MapTile
 {
-public:
-  MiddleMapTile();
-  virtual ~MiddleMapTile();
 };
 
 class InnerMapTile : public MapTile
 {
-public:
-  InnerMapTile();
-  virtual ~InnerMapTile();
 };
 
 /*
@@ -160,6 +145,16 @@ class ChapelTile : public OuterMapTile
   6      - A barbarian leads you out; gain 1 strength.
 */
 class CragsTile : public OuterMapTile
+{
+  virtual string getTitle() const;
+};
+
+/*
+  Class: PlainsTile
+  Draw one card.
+  Do not draw a card if there is already one in this space.
+*/
+class PlainsTile : public OuterMapTile
 {
   virtual string getTitle() const;
 };
