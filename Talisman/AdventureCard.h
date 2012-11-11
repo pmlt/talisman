@@ -29,7 +29,7 @@ public:
   string type();
   void type(string type);
 private:
-  string _type();
+  string _type;
 };
 
 class ObjectCard : public AdventureCard
@@ -38,7 +38,7 @@ public:
   string type();
   void type(string type);
 private:
-  string _type();
+  string _type;
 };
 
 class StrangerCard : public AdventureCard
