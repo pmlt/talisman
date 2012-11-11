@@ -11,9 +11,12 @@ class TException
 {
 public:
   TException(void);
+  TException(string msg);
   virtual ~TException(void);
 
   virtual string message();
+private:
+  string msg;
 };
 
 /*
@@ -61,14 +64,39 @@ public:
 };
 
 /*
+  Class: FileOpenException
+  Occurs when a file can't be opened for reading or writing
+*/
+class FileOpenException : public TException
+{
+public:
+  FileOpenException(string filename);
+  virtual string message();
+private:
+  string filename;
+};
+
+/*
   Class: InvalidMapFileException
-  Occurs whenever a bad file was passed to Board::from_file.
+  Occurs whenever a bad file was passed to Board::createFromFile.
 */
 class InvalidMapFileException : public TException
 {
 public:
-  InvalidMapFileException();
   InvalidMapFileException(string line);
+  virtual string message();
+private:
+  string line;
+};
+
+/*
+  Class: InvalidCharacterFileException
+  Occurs whenever a bad file was passed to Character::createFromFile.
+*/
+class InvalidCharacterFileException : public TException
+{
+public:
+  InvalidCharacterFileException(string line);
   virtual string message();
 private:
   string line;

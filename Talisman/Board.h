@@ -13,6 +13,7 @@ public:
 
   static Board* createFromFile(string map_file);
 
+  MapTile* find(string title);
   (MapTile ***) getTiles() const;
   
 private:

@@ -19,7 +19,14 @@ Game* Game::init(string map_file, string character_file, string card_file)
   _inst->board = Board::createFromFile(map_file);
   
   //Create Character object from character_file
-  //Character::createFromFile(character_file, &(_inst->players));
+  Character::createFromFile(character_file, _inst->players);
+  //Place characters on the board
+  for (auto it = _inst->players.begin(); it != _inst->players.end(); it++) {
+    string start_pos = (*it)->startPosition();
+    MapTile* start_tile = _inst->board->find(start_pos);
+    if (start_tile == NULL) throw new TException("Invalid starting position for " + (*it)->name());
+    (*it)->move(start_tile);
+  }
 
   //Create card deck from card_file
   //AdventureCard::createDeckFromFile(card_file, &(_inst->adventure_deck));
@@ -30,6 +37,12 @@ Game* Game::init(string map_file, string character_file, string card_file)
 
 void Game::destroy(Game* game)
 {
+  Character *c;
+  while (game->players.size() > 0) {
+    c = game->players.back();
+    game->players.pop_back();
+    delete c;
+  }
   delete game;
 }
 

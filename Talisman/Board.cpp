@@ -19,6 +19,23 @@ Board::Board(void)
 
 Board::~Board(void)
 {
+  for (int i=0; i < BOARD_ROWS; i++) {
+    for (int j=0; j < BOARD_COLS; j++) {
+      if (this->tiles[i][j] == NULL) continue;
+      delete this->tiles[i][j];
+    }
+  }
+}
+
+MapTile* Board::find(string title)
+{
+  for (int i=0; i < BOARD_ROWS; i++) {
+    for (int j=0; j < BOARD_COLS; j++) {
+      if (this->tiles[i][j] == NULL) continue;
+      if (this->tiles[i][j]->getTitle() == title) return this->tiles[i][j];
+    }
+  }
+  return NULL;
 }
 
 Board* Board::createFromFile(string map_file)
@@ -84,7 +101,7 @@ Board* Board::createFromFile(string map_file)
     }
   }
   else {
-    throw new InvalidMapFileException();
+    throw new FileOpenException(map_file);
   }
   maphandle.close();
   //Set neighbors for each tile.
