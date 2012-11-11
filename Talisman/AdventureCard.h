@@ -16,8 +16,6 @@ public:
   unsigned char number();
   void number(unsigned char number);
 
-  virtual void doEncounter();
-
 private:
   string _title;
   unsigned char _number; //encounter number
@@ -56,3 +54,62 @@ class EventCard : public AdventureCard
 class PlaceCard : public AdventureCard
 {
 };
+
+/**** Actual cards ****/
+
+class SwordCard : public ObjectCard
+{
+};
+
+class BagOfGoldCard : public ObjectCard
+{
+};
+
+class TalismanCard : public ObjectCard
+{
+};
+
+class WitchCard : public StrangerCard
+{
+};
+
+class HealerCard : public StrangerCard
+{
+};
+
+class PrincessCard : public FollowerCard
+{
+};
+
+class GuideCard : public FollowerCard
+{
+};
+
+class MarshCard : public PlaceCard
+{
+};
+
+class ShrineCard : public PlaceCard
+{
+};
+
+class BlizzardCard : public EventCard
+{
+};
+
+class MarketDayCard : public EventCard
+{
+};
+
+class WolfCard : public EnemyCard
+{
+};
+
+class WildBoarCard : public EnemyCard
+{
+};
+
+class BearCard : public EnemyCard
+{
+};
+

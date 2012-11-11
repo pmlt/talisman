@@ -101,3 +101,16 @@ public:
 private:
   string line;
 };
+
+/*
+  Class: InvalidCardFileException
+  Occurs whenever a bad file was passed to AdventureCard::createFromFile.
+*/
+class InvalidCardFileException : public TException
+{
+public:
+  InvalidCardFileException(string line);
+  virtual string message();
+private:
+  string line;
+};

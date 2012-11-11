@@ -10,7 +10,7 @@ Game::~Game(void)
 {
 }
 
-Game* Game::init(string map_file, string character_file, string card_file)
+Game* Game::init(string map_file, string character_file, string deck_file)
 {
   //Create Game object
   Game* _inst = new Game();
@@ -29,7 +29,7 @@ Game* Game::init(string map_file, string character_file, string card_file)
   }
 
   //Create card deck from card_file
-  //AdventureCard::createDeckFromFile(card_file, &(_inst->adventure_deck));
+  AdventureCard::createDeckFromFile(deck_file, _inst->adventure_deck);
 
   //Return Game object
   return _inst;
