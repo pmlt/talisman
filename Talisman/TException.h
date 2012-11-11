@@ -31,3 +31,10 @@ class InventoryFullException : public TException {};
   currently playing.
 */
 class PlayerNotFoundException : public TException {};
+
+/*
+  Class: PlayerExistsException
+  Occurs when the game tries to add a player that is
+  already currently playing.
+*/
+class PlayerExistsException : public TException {};

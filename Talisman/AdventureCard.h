@@ -1,5 +1,7 @@
 #pragma once
 #include <queue>
+#include <string.h>
+using namespace std;
 
 class AdventureCard
 {
