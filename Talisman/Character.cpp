@@ -78,7 +78,7 @@ void Character::move(MapTile* new_position)
   this->recompute();
 }
 
-void Character::pickup(Item* item)
+void Character::pickup(ObjectCard* item)
 {
   if (this->inventory.size() >= this->capacity()) {
     throw InventoryFullException();
@@ -87,29 +87,11 @@ void Character::pickup(Item* item)
   this->recompute();
 }
 
-void Character::pickup(Talisman* t)
-{
-  this->talismans.push_back(t);
-  this->recompute();
-}
-
-void Character::drop(Item* item)
+void Character::drop(ObjectCard* item)
 {
   for (unsigned int i=0; i < this->inventory.size(); i++) {
     if (item == this->inventory[i]) {
       this->inventory.erase(this->inventory.begin()+i);
-      this->recompute();
-      return;
-    }
-  }
-  throw NotInInventoryException();
-}
-
-void Character::drop(Talisman* t)
-{
-  for (unsigned int i=0; i < this->talismans.size(); i++) {
-    if (t == this->talismans[i]) {
-      this->talismans.erase(this->talismans.begin()+i);
       this->recompute();
       return;
     }
@@ -130,18 +112,7 @@ void Character::recompute()
   this->effective_capacity = this->base_capacity;
   
   // Take into account items in inventory
-  for (unsigned int i=0; i < this->inventory.size(); i++) {
-    Item *item = this->inventory[i];
-    if (item->strength() > 0) {
-      this->effective_strength += item->strength();
-    }
-    if (item->craft() > 0) {
-      this->effective_craft += item->craft();
-    }
-    if (item->capacity() > 0) {
-      this->effective_capacity += item->capacity();
-    }
-  }
+  // (TODO)
 
   // Take into account current position 
   // (TODO when the map part is implemented)

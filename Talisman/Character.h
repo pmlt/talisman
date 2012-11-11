@@ -1,9 +1,14 @@
 #pragma once
 
-#include "TalismanGame.h"
+#include "AdventureCard.h"
+#include "Spell.h"
+#include "MapTile.h"
 #include "Observable.h"
+#include "TException.h"
 #include <vector>
 #include <string>
+
+#define DEFAULT_CAPACITY 4
 
 /*
   Class: Character
@@ -121,13 +126,7 @@ public:
     Throws:
       InventoryFullException - The character's inventory is already full
   */
-  void pickup(Item* item);
-
-  /*
-    Method: pickup
-    Pick up a talisman. There is no limit on the number of talismans.
-  */
-  void pickup(Talisman* t);
+  void pickup(ObjectCard* item);
 
   /*
     Method: drop
@@ -136,16 +135,7 @@ public:
     Throws:
       NotInInventoryException - The item could not be found in inventory.
   */
-  void drop(Item* item);
-
-  /*
-    Method: drop
-    Drop a talisman from inventory and places it on the current map tile.
-
-    Throws:
-      NotInInventoryException - The item could not be found in inventory.
-  */
-  void drop(Talisman* t);
+  void drop(ObjectCard* item);
 
 protected:
   /*
@@ -177,10 +167,9 @@ private:
 
   MapTile* _position;
 
-  std::vector<Item*> inventory;
+  std::vector<ObjectCard*> inventory;
   std::vector<Spell*> spells;
-  std::vector<Talisman*> talismans;
-  std::vector<Follower*> followers;
+  std::vector<FollowerCard*> followers;
 };
 
 /*
