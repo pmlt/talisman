@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <stack>
 #include "Character.h"
 #include "Board.h"
 #include "AdventureCard.h"
@@ -93,13 +94,20 @@ public:
   */
   void start();
 
+  /*
+    Method: isFinished
+    Inspect victory conditions to determine if a player has won.
+  */
+  bool isFinished();
+
 private:
   Game(void);
   ~Game(void);
 
   GameUI* ui;
   vector<Character*> players;
+  queue<Character*> player_turns;
   Board* board;
-  queue<AdventureCard*> adventure_deck;
+  stack<AdventureCard*> adventure_deck;
 };
 

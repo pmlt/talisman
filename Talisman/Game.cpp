@@ -26,6 +26,7 @@ Game* Game::init(string map_file, string character_file, string deck_file)
     MapTile* start_tile = _inst->board->find(start_pos);
     if (start_tile == NULL) throw new TException("Invalid starting position for " + (*it)->name());
     (*it)->move(start_tile);
+    _inst->player_turns.push(*it);
   }
 
   //Create card deck from card_file
@@ -88,7 +89,7 @@ void Game::addAdventureCard(AdventureCard &card)
 
 AdventureCard* Game::drawAdventureCard()
 {
-  auto card = this->adventure_deck.front();
+  auto card = this->adventure_deck.top();
   this->adventure_deck.pop();
   return card;
 }
@@ -102,4 +103,23 @@ unsigned char Game::roll() const
 void Game::start()
 {
   //Start the whole game!
+  while (!this->isFinished()) {
+    //Do next player's turn
+    Character *c = this->player_turns.front();
+
+    this->getUI()->announce("It is now the " + c->name() + "'s turn...");
+
+    MapTile* t = c->position();
+    t->start(c, this);
+
+    this->player_turns.pop();
+    this->player_turns.push(c);
+  }
+}
+
+bool Game::isFinished()
+{
+  //Inspect victory conditions
+  //Return true if a player has won
+  return 0;
 }

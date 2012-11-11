@@ -1,5 +1,5 @@
 #pragma once
-#include <queue>
+#include <stack>
 #include <string.h>
 using namespace std;
 
@@ -9,7 +9,7 @@ public:
   AdventureCard(void);
   virtual ~AdventureCard(void);
 
-  static void createDeckFromFile(std::string deck_file, std::queue<AdventureCard*> &deck);
+  static void createDeckFromFile(std::string deck_file, std::stack<AdventureCard*> &deck);
 
   string title();
   void title(string title);

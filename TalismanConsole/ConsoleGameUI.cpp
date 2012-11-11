@@ -12,6 +12,12 @@ ConsoleGameUI::~ConsoleGameUI(void)
 {
 }
 
+void ConsoleGameUI::announce(string msg)
+{
+  cout << msg << endl << endl;
+  getchar();
+}
+
 unsigned int ConsoleGameUI::prompt(string msg, string options[], unsigned int options_size)
 {
   //asks user for the index position of their choice plus 1, in

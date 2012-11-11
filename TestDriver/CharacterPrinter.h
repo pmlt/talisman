@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Observer.h"
-#include "TalismanGame.h"
+#include "Character.h"
 
 class CharacterPrinter :
   public Observer
