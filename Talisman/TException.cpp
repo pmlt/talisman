@@ -35,3 +35,9 @@ string InvalidCharacterFileException::message() {
   if (this->line.size() > 0) return "The provided character file has an error on line: " + this->line;
   else return "The provided character file was invalid.";
 }
+
+InvalidCardFileException::InvalidCardFileException(string l) : line(l) {}
+string InvalidCardFileException::message() {
+  if (this->line.size() > 0) return "The provided card deck file has an error on line: " + this->line;
+  else return "The provided card deck file was invalid.";
+}
