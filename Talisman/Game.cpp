@@ -36,16 +36,31 @@ void Game::setUI(GameUI &ui) { this->ui = &ui; }
 
 void Game::addPlayer(Character &c)
 {
-  // Check player is not already in vector
   // Assign position on board to player
-  // Add player to vector
+
+  for(vector<int>::size_type i = 0; i != players.size(); i++) {
+    if (this->players[i]->name() == c.name() )
+    {
+      //Throw PlayerExistsException
+      return;
+    }
+  }
+  // Assign position on board to player
+  this->players.push_back(&c);
 }
 
 void Game::removePlayer(Character &c)
 {
-  //Throw exception if player not found in vector
-  //Remove player from board
-  //Remove player from vector
+  for(vector<int>::size_type i = 0; i != players.size(); i++) {
+    if (this->players[i]->name() == c.name() )
+    {
+      this->players.erase(this->players.begin() + i);
+      //Remove from board
+      return;
+    }
+  }
+  //Throw PlayerNotFoundException
+
 }
 
 Board* Game::getBoard() const { return this->board; }
