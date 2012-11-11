@@ -80,7 +80,7 @@ AdventureCard* Game::drawAdventureCard()
 
 unsigned char Game::roll() const
 {
-  srand(time(NULL));
+  srand((unsigned int)time(NULL));
   return (rand() % 6) + 1;;
 }
 
