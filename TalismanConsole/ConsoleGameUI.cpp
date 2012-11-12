@@ -70,8 +70,15 @@ void ConsoleGameUI::notify()
     for (int j = 0; j < 7; ++j)
     {
       cout << "|" << setw(20);
-      str = this->game->getBoard()->getTiles()[i][j]->getTitle();
-      cout << str + string((20 - str.length()) / 2, ' ');
+      if (this->game->getBoard()->getTile(i, j) != NULL)
+      {
+        
+        str = this->game->getBoard()->getTile(i, j)->getTitle();
+        cout << str + string((20 - str.length()) / 2, ' ');
+      }
+      else 
+        cout << " ";
+
     }
     cout << "|" << endl;
 

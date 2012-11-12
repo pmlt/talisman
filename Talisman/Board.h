@@ -17,6 +17,7 @@ public:
 
   MapTile* find(string title);
   (MapTile ***) getTiles() const;
+  MapTile* getTile(int, int);
   
 private:
   (MapTile*) tiles[BOARD_ROWS][BOARD_COLS]; // 7x7 game board
