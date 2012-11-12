@@ -124,3 +124,7 @@ bool Game::isFinished()
   return 0;
 }
 
+int Game::getNumberOfPlayers() const
+{
+  return this->players.size();
+}

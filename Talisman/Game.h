@@ -100,6 +100,8 @@ public:
   */
   bool isFinished();
 
+  int getNumberOfPlayers() const;
+
 private:
   Game(void);
   ~Game(void);
