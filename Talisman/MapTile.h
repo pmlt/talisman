@@ -19,6 +19,8 @@ public:
   virtual ~MapTile(void);
 
   virtual string getTitle() const = 0;
+  Character* getPlayer();
+  void setPlayer(Character *player);
   
   void setNeighbors(MapTile* cw, MapTile* ccw);
 
@@ -48,6 +50,8 @@ public:
 private:
   MapTile* cw;
   MapTile* ccw;
+
+  Character* player;
 };
 
 class OuterMapTile : public MapTile
