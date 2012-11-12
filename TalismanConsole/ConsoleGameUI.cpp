@@ -86,7 +86,6 @@ void ConsoleGameUI::notify()
     for (int j = 0; j < 7; ++j)
     {
       cout << "|" << setw(21);
-      //Check for players
     }
     cout << "|" << endl;
 
@@ -94,7 +93,10 @@ void ConsoleGameUI::notify()
     for (int j = 0; j < 7; ++j)
     {
       cout << "|" << setw(21);
-      //Check for cards
+      if (this->game->getBoard()->getTile(i, j) != NULL && this->game->getBoard()->getTile(i, j)->getPlayer() != NULL)
+      {
+        cout << this->game->getBoard()->getTile(i, j)->getPlayer()->craft();
+      }
     }
     cout << "|" << endl;
 
@@ -102,7 +104,6 @@ void ConsoleGameUI::notify()
     for (int j = 0; j < 7; ++j)
     {
       cout << "|" << setw(21);
-      //Unused so far
     }
     cout << "|" << endl;
 
