@@ -92,11 +92,14 @@ void ConsoleGameUI::notify()
     //Third
     for (int j = 0; j < 7; ++j)
     {
-      cout << "|" << setw(21);
+      cout << "|" << setw(20);
       if (this->game->getBoard()->getTile(i, j) != NULL && this->game->getBoard()->getTile(i, j)->getPlayer() != NULL)
       {
-        cout << this->game->getBoard()->getTile(i, j)->getPlayer()->craft();
+        str = this->game->getBoard()->getTile(i, j)->getPlayer()->name();
+        cout << str + string((20 - str.length()) / 2, ' ');
       }
+      else
+        cout << " ";
     }
     cout << "|" << endl;
 
