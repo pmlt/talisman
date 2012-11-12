@@ -127,50 +127,49 @@ Board* Board::createFromFile(string map_file)
       if (i == min_i) {
         if (j == min_j) {
           //Top-left corner
-          cw = b->tiles[i+1][j];
-          ccw = b->tiles[i][j+1];
+          cw = b->tiles[i][j+1];
+          ccw = b->tiles[i+1][j];
         }
         else if (j > min_j && j < max_j) {
           //Top row, in the middle
-          cw = b->tiles[i+1][j];
-          ccw = b->tiles[i-1][j];
+          cw = b->tiles[i][j+1];
+          ccw = b->tiles[i][j-1];
         }
         else {
           //Top-right corner
-          cw = b->tiles[i][j+1];
-          ccw = b->tiles[i-1][j];
+          cw = b->tiles[i+1][j];
+          ccw = b->tiles[i][j-1];
         }
       }
       else if (i > min_i && i < max_i) {
         if (j == min_j) {
           //Left column, in the middle
-          cw = b->tiles[i][j-1];
-          ccw = b->tiles[i][j+1];
+          cw = b->tiles[i-1][j];
+          ccw = b->tiles[i+1][j];
         }
         else {
           //Right column, in the middle
-          cw = b->tiles[i][j+1];
-          ccw = b->tiles[i][j-1];
+          cw = b->tiles[i+1][j];
+          ccw = b->tiles[i-1][j];
         }
       }
       else {
         if (j == min_j) {
           //Bottom-left corner
-          cw = b->tiles[i][j-1];
-          ccw = b->tiles[i+1][j];
+          cw = b->tiles[i-1][j];
+          ccw = b->tiles[i][j+1];
         }
         else if (j > min_j && j < max_j) {
           //Bottom row, in the middle
-          cw = b->tiles[i-1][j];
-          ccw = b->tiles[i+1][j];
+          cw = b->tiles[i][j-1];
+          ccw = b->tiles[i][j+1];
         }
         else {
           //Bottom-right corner
-          cw = b->tiles[i-1][j];
-          ccw = b->tiles[i][j-1];
+          cw = b->tiles[i][j-1];
+          ccw = b->tiles[i-1][j];
         }
       }
-      
       b->tiles[i][j]->setNeighbors(cw, ccw);
     }
   }
