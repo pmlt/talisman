@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AdventureCard.h"
 #include "TException.h"
+#include "Game.h"
 #include <stack>
 #include <iostream>
 #include <fstream>
@@ -52,14 +53,32 @@ void AdventureCard::createDeckFromFile(std::string deck_file, std::stack<Adventu
   file.close();
 }
 
-string AdventureCard::title() { return this->_title; }
-void AdventureCard::title(string title) { this->_title = title; }
-
 unsigned char AdventureCard::number() { return this->_number; }
 void AdventureCard::number(unsigned char number) { this->_number = number; }
+
+void AdventureCard::encounter(Character* character, Game* game)
+{
+  //Demo: just print card's title for now
+  game->getUI()->announce("You have encountered the " + this->title() + "!");
+}
 
 string EnemyCard::type() { return this->_type; }
 void EnemyCard::type(string type) { this->_type = type; }
 
 string ObjectCard::type() { return this->_type; }
 void ObjectCard::type(string type) { this->_type = type; }
+
+string SwordCard::title() { return "Sword"; }
+string BagOfGoldCard::title() { return "Bag of Gold"; }
+string TalismanCard::title() { return "Talisman"; }
+string WitchCard::title() { return "Witch"; }
+string HealerCard::title() { return "Healer"; }
+string PrincessCard::title() { return "Princess"; }
+string GuideCard::title() { return "Guide"; }
+string MarshCard::title() { return "Marsh"; }
+string ShrineCard::title() { return "Shrine"; }
+string BlizzardCard::title() { return "Blizzard"; }
+string MarketDayCard::title() { return "Market Day"; }
+string WolfCard::title() { return "Wolf"; }
+string WildBoarCard::title() { return "Wild Boar"; }
+string BearCard::title() { return "Bear"; }
