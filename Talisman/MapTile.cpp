@@ -8,7 +8,7 @@
 using namespace std;
 
 MapTile::MapTile() :
-  cw(NULL),ccw(NULL)
+  cw(NULL),ccw(NULL),player(NULL)
 {
 }
 
