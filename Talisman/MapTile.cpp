@@ -77,9 +77,15 @@ void MapTile::step(Character *character, Game* game, unsigned int movement, unsi
 
 void MapTile::land(Character* character, Game* game)
 {
-  game->getUI()->announce("You have arrived at the " + this->getTitle() + "... Your turn is over.");
+  game->getUI()->announce("You have arrived at the " + this->getTitle() + "...");
   //Set the new position
   character->move(this);
+  //Default behavior for demonstration: draw a card.
+  AdventureCard *card = game->drawAdventureCard();
+  if (card != NULL) {
+    //Encounter the card!
+    card->encounter(character, game);
+  }
   //Redraw
   game->notify();
 }
@@ -93,6 +99,28 @@ string GraveyardTile::getTitle() const { return "Graveyard"; }
 string WoodsTile::getTitle() const { return "Woods"; }
 
 string SentinelTile::getTitle() const { return "Sentinel"; }
+
+void SentinelTile::step(Character *character, Game* game, unsigned int movement, unsigned int direction)
+{
+  if (movement > 0) {
+    //Ask user to move to inner region
+    string options[2] = {
+      "Yes, cross into the middle region.",
+      "No, continue my way in the outer region."
+    };
+    unsigned char choice = game->getUI()->prompt("You are passing the Sentinel space and you still have movement left. Do you want to cross the Sentinel into the middle region?", options, 2);
+    if (choice == 0) {
+      //Cross!
+      MapTile* dest = game->getBoard()->find("Portal of Power");
+      if (dest != NULL) {
+        dest->land(character, game);
+        return; //Do NOT continue
+      }
+    }
+  }
+  //Continue normally
+  MapTile::step(character, game, movement, direction);
+}
 
 string HillsTile::getTitle() const { return "Hills"; }
 

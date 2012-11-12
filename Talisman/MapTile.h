@@ -134,6 +134,7 @@ class WoodsTile : public OuterMapTile
 class SentinelTile : public OuterMapTile
 {
   virtual string getTitle() const;
+  virtual void step(Character *character, Game* game, unsigned int movement, unsigned int direction);
 };
 
 /*
