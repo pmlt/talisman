@@ -17,6 +17,9 @@ MapTile::~MapTile(void)
 {
 }
 
+Character* MapTile::getPlayer() { return this->player; }
+void MapTile::setPlayer(Character* player) { this->player = player; }
+
 void MapTile::setNeighbors(MapTile* cw, MapTile* ccw)
 {
   this->cw = cw;

@@ -177,8 +177,6 @@ Board* Board::createFromFile(string map_file)
   return b;
 }
 
-MapTile*** Board::getTiles() const { return (MapTile***)this->tiles; }
-
 MapTile* Board::getTile(int x, int y)
 {
   return this->tiles[x][y];
