@@ -65,13 +65,13 @@ void MapTile::step(Character *character, Game* game, unsigned int movement, unsi
     this->land(character, game);
     return;
   }
-  if (direction == 1) {
+  if (direction == 0) {
     //Clockwise
     this->cw->step(character, game, movement - 1, direction);
   }
   else {
     //Counter-clockwise
-    this->cw->step(character, game, movement - 1, direction);
+    this->ccw->step(character, game, movement - 1, direction);
   }
 }
 
