@@ -28,7 +28,7 @@ Game* Game::init(string map_file, string character_file, string deck_file)
     (*it)->move(start_tile);
     _inst->player_turns.push(*it);
   }
-
+  srand((unsigned int)time(NULL));
   //Create card deck from card_file
   AdventureCard::createDeckFromFile(deck_file, _inst->adventure_deck);
 
@@ -96,7 +96,6 @@ AdventureCard* Game::drawAdventureCard()
 
 unsigned char Game::roll() const
 {
-  srand((unsigned int)time(NULL));
   return (rand() % 6) + 1;;
 }
 

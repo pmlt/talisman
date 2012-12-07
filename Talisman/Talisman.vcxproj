@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdventureCard.h" />
+    <ClInclude Include="Battle.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterCommand.h" />
@@ -86,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdventureCard.cpp" />
+    <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterCommand.cpp" />

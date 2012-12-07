@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "Game.h"
 #include "CharacterCommand.h"
+#include "Battle.h"
 #include <sstream>
 
 using namespace std;
@@ -85,6 +86,15 @@ void MapTile::land(Character* character, Game* game)
   if (card != NULL) {
     //Encounter the card!
     card->encounter(character, game);
+
+    //if enemy, send character and card to fight
+    //temporary condition
+    if (card->title() == "Bear" || card->title() == "Wolf" || card->title() == "Wild Boar")
+    {
+      Battle * battle = new Battle();
+      battle->fight(character, card, game);
+    }
+    
   }
   //Redraw
   game->notify();
