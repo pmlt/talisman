@@ -9,7 +9,7 @@
 using namespace std;
 
 MapTile::MapTile() :
-  cw(NULL),ccw(NULL),player(NULL)
+  cw(NULL),ccw(NULL),players()
 {
 }
 
@@ -18,8 +18,17 @@ MapTile::~MapTile(void)
 {
 }
 
-Character* MapTile::getPlayer() { return this->player; }
-void MapTile::setPlayer(Character* player) { this->player = player; }
+Character* MapTile::getPlayer(unsigned int index) const { return this->players[index]; }
+unsigned int MapTile::getPlayerCount() const { return players.size(); }
+void MapTile::addPlayer(Character* player) { this->players.push_back(player); }
+void MapTile::removePlayer(Character* player) {
+  for (auto it = players.begin(); it != players.end(); it++) {
+    if ((*it) == player) {
+      players.erase(it);
+      break;
+    }
+  }
+}
 
 void MapTile::setNeighbors(MapTile* cw, MapTile* ccw)
 {

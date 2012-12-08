@@ -93,9 +93,10 @@ void ConsoleGameUI::notify()
     for (int j = 0; j < 7; ++j)
     {
       cout << "|" << setw(20);
-      if (this->game->getBoard()->getTile(i, j) != NULL && this->game->getBoard()->getTile(i, j)->getPlayer() != NULL)
+      if (this->game->getBoard()->getTile(i, j) != NULL && this->game->getBoard()->getTile(i, j)->getPlayerCount() > 0)
       {
-        str = this->game->getBoard()->getTile(i, j)->getPlayer()->name();
+        // XXX You must print ALL player names instead of just the first one.
+        str = this->game->getBoard()->getTile(i, j)->getPlayer(0)->name();
         cout << str + string((20 - str.length()) / 2, ' ');
       }
       else

@@ -74,11 +74,11 @@ void Character::transformBack()
 
 void Character::move(MapTile* new_position)
 {
-  if (this->_position != NULL && this->_position->getPlayer() == this) {
-    this->_position->setPlayer(NULL);
+  if (this->_position != NULL) {
+    this->_position->removePlayer(this);
   }
   this->_position = new_position;
-  this->_position->setPlayer(this);
+  this->_position->addPlayer(this);
   this->recompute();
 }
 
