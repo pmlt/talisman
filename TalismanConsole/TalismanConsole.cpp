@@ -13,7 +13,7 @@ using namespace std;
 
 void print_usage()
 {
-  cout << "Usage: TalismanConsole.exe -m /path/to/mapfile.txt -c /path/to/characters.txt -d /path/to/deckfile.txt\n";
+  cout << "Usage: TalismanConsole.exe -m /path/to/mapfile.txt -c /path/to/characters.txt -a /path/to/adventuredeck.txt -p /path/to/purchasedeck.txt \n";
 }
 
 int main(int argc, char* argv[])
@@ -23,7 +23,8 @@ int main(int argc, char* argv[])
   Game* game = NULL;
   string map_file;
   string character_file;
-  string deck_file;
+  string adventure_deck_file;
+  string purchase_deck_file;
 
   // Parse command-line arguments
   for (int i = 1; i < argc-1; i += 2) {
@@ -31,8 +32,11 @@ int main(int argc, char* argv[])
     if (arg == "-m") {
       map_file = argv[i+1];
     }
-    else if (arg == "-d") {
-      deck_file = argv[i+1];
+    else if (arg == "-a") {
+      adventure_deck_file = argv[i+1];
+    }
+    else if (arg == "-p") {
+      purchase_deck_file = argv[i+1];
     }
     if (arg == "-c") {
       character_file = argv[i+1];
@@ -48,14 +52,14 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  if (deck_file.size() <= 0) {
+  if (adventure_deck_file.size() <= 0 || purchase_deck_file.size() <= 0) {
     print_usage();
     return 1;
   }
 
   // Construct main Game object by invoking factory method with file paths
   try {
-    game = Game::init(map_file, character_file, deck_file);
+    game = Game::init(map_file, character_file, adventure_deck_file, purchase_deck_file);
   }
   catch (TException* e) {
     cout << "An error occured during initialization: " << e->message() << endl;

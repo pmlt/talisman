@@ -5,8 +5,6 @@
 #include "MapTile.h"
 #include "TException.h"
 
-#define ASCII0 48;
-
 Board::Board(void)
 {
   for (int i=0; i < BOARD_ROWS; i++) {

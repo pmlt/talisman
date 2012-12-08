@@ -1,0 +1,8 @@
+6 SwordCard
+4 TalismanCard
+1 CounterSpellCard
+1 DestroyMagicCard
+1 HealingCard
+1 InvisibilityCard
+1 ImmobilityCard
+1 PreservationCard

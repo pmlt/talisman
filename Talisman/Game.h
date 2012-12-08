@@ -25,7 +25,7 @@ public:
     Method: init
     Initialize the singleton using files for content.
   */
-  static Game* init(string map_file, string character_file, string card_file);
+  static Game* init(string map_file, string character_file, string adventure_deck_file, string purchase_deck_file);
 
   /*
     Method: destroy
@@ -112,4 +112,5 @@ private:
   queue<Character*> player_turns;
   Board* board;
   stack<AdventureCard*> adventure_deck;
+  stack<AdventureCard*> purchase_deck;
 };

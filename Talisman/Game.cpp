@@ -10,7 +10,7 @@ Game::~Game(void)
 {
 }
 
-Game* Game::init(string map_file, string character_file, string deck_file)
+Game* Game::init(string map_file, string character_file, string adventure_deck_file, string purchase_deck_file)
 {
   //Create Game object
   Game* _inst = new Game();
@@ -29,8 +29,17 @@ Game* Game::init(string map_file, string character_file, string deck_file)
     _inst->player_turns.push(*it);
   }
   srand((unsigned int)time(NULL));
-  //Create card deck from card_file
-  AdventureCard::createDeckFromFile(deck_file, _inst->adventure_deck);
+
+  //Create card decks from files
+  vector<AdventureCard*> v1, v2;
+  AdventureCard::createDeckFromFile(adventure_deck_file, v1, false);
+  for (auto it = v1.begin(); it != v1.end(); it++) {
+    _inst->adventure_deck.push(*it);
+  }
+  AdventureCard::createDeckFromFile(purchase_deck_file, v2, true);
+  for (auto it = v2.begin(); it != v2.end(); it++) {
+    _inst->purchase_deck.push(*it);
+  }
 
   //Return Game object
   return _inst;
