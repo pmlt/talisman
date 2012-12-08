@@ -92,7 +92,7 @@ void MapTile::land(Character* character, Game* game)
     if (card->title() == "Bear" || card->title() == "Wolf" || card->title() == "Wild Boar")
     {
       Battle * battle = new Battle();
-      battle->fight(character, card, game);
+      battle->cardFight(character, card, game);
     }
     
   }

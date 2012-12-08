@@ -52,6 +52,12 @@ public:
   int life() const;
 
   /*
+    Method: setLife
+    Sets the current life amount of the character
+  */
+  void setLife(int);
+
+  /*
     Method: strength
     Returns the effective strength of the character. The effective strength
     means taking into account the base strength, strength tokens, equipment, 
@@ -74,10 +80,21 @@ public:
   int fate() const;
 
   /*
+    Method: setFate
+    Sets the current number of fate tokens of the character.
+  */
+  void setFate(int);
+  /*
     Method: gold
     Returns the current number of gold tokens of the character.
   */
   int gold() const;
+
+  /*
+    Method: setGold
+    Sets the current number of gold tokens of the character.
+  */
+  void setGold(int);
 
   /*
     Method: capacity
