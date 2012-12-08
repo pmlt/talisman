@@ -2,6 +2,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -19,8 +20,12 @@ public:
   virtual ~MapTile(void);
 
   virtual string getTitle() const = 0;
-  Character* getPlayer();
-  void setPlayer(Character *player);
+
+  void addPlayer(Character *player);
+  void removePlayer(Character *player);
+  unsigned int getPlayerCount() const;
+  Character* getPlayer(unsigned int index) const;
+
   
   void setNeighbors(MapTile* cw, MapTile* ccw);
 
@@ -51,7 +56,7 @@ private:
   MapTile* cw;
   MapTile* ccw;
 
-  Character* player;
+  vector<Character*> players;
 };
 
 class OuterMapTile : public MapTile
