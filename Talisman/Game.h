@@ -8,6 +8,7 @@
 #include "AdventureCard.h"
 #include "GameUI.h"
 #include "Observable.h"
+#include "Battle.h"
 
 using namespace std;
 

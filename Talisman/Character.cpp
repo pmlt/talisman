@@ -125,6 +125,21 @@ void Character::recompute()
   this->notify();
 }
 
+void Character::setFate(int newFate)
+{
+  fate_counters = newFate;
+}
+
+void Character::setGold(int newGold)
+{
+  gold_counters = newGold;
+}
+
+void Character::setLife(int newLife)
+{
+  life_counters = newLife;
+}
+
 /******* CHARACTER OVERRIDES *********/
 
 Warrior::Warrior() : Character(5, 4, 2, 1) {}
