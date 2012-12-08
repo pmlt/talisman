@@ -130,7 +130,7 @@ void SentinelTile::step(Character *character, Game* game, unsigned int movement,
     unsigned char choice = game->getUI()->prompt("You are passing the Sentinel space and you still have movement left. Do you want to cross the Sentinel into the middle region?", options, 2);
     if (choice == 0) {
       //Cross!
-      MapTile* dest = game->getBoard()->find("Portal of Power");
+      MapTile* dest = game->getBoard()->find("Hills (Sentinel)");
       if (dest != NULL) {
         dest->land(character, game);
         return; //Do NOT continue
@@ -142,6 +142,8 @@ void SentinelTile::step(Character *character, Game* game, unsigned int movement,
 }
 
 string HillsTile::getTitle() const { return "Hills"; }
+
+string SentinelHillsTile::getTitle() const { return "Hills (Sentinel)"; }
 
 string ChapelTile::getTitle() const { return "Chapel"; }
 

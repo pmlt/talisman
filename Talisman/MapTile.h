@@ -153,6 +153,17 @@ class HillsTile : public OuterMapTile
 };
 
 /*
+  Class: SentinelHillsTile
+  Draw one card.
+  Do not draw a card if there is already one in this space.
+  This is the destination space for the Sentinel tile.
+*/
+class SentinelHillsTile : public HillsTile
+{
+  virtual string getTitle() const;
+};
+
+/*
   Class: ChapelTile
   Based on alignment.
   Evil    - Lose one life.
