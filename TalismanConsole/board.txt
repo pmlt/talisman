@@ -27,7 +27,7 @@
 11 PortalOfPowerTile
 12 BlackKnightTile
 13 HiddenValleyTile
-14 HillsTile
+14 SentinelHillsTile
 15 CursedGladeTile
 25 RunesTile
 35 ChasmTile

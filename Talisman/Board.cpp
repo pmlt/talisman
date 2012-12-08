@@ -69,6 +69,7 @@ Board* Board::createFromFile(string map_file)
       else if (ident == "WoodsTile") tile = new WoodsTile();
       else if (ident == "SentinelTile") tile = new SentinelTile();
       else if (ident == "HillsTile") tile = new HillsTile();
+      else if (ident == "SentinelHillsTile") tile = new SentinelHillsTile();
       else if (ident == "ChapelTile") tile = new ChapelTile();
       else if (ident == "CragsTile") tile = new CragsTile();
       else if (ident == "PlainsTile") tile = new PlainsTile();
