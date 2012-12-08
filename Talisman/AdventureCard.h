@@ -1,5 +1,5 @@
 #pragma once
-#include <stack>
+#include <vector>
 #include <string.h>
 using namespace std;
 
@@ -12,9 +12,11 @@ public:
   AdventureCard(void);
   virtual ~AdventureCard(void);
 
-  static void createDeckFromFile(std::string deck_file, std::stack<AdventureCard*> &deck);
+  static void createDeckFromFile(std::string deck_file, std::vector<AdventureCard*> &deck, bool set_purchase_flag);
 
   virtual string title() = 0;
+  bool isPurchaseCard() const;
+  void setPurchaseCard(bool isPurchase);
   unsigned char number();
   void number(unsigned char number);
 
@@ -22,6 +24,7 @@ public:
 
 private:
   unsigned char _number; //encounter number
+  bool _isPurchaseCard;
 };
 
 class EnemyCard : public AdventureCard
@@ -55,6 +58,10 @@ class EventCard : public AdventureCard
 };
 
 class PlaceCard : public AdventureCard
+{
+};
+
+class SpellCard : public AdventureCard
 {
 };
 
@@ -139,6 +146,42 @@ public:
 };
 
 class BearCard : public EnemyCard
+{
+public:
+  virtual string title();
+};
+
+class CounterSpellCard : public SpellCard
+{
+public:
+  virtual string title();
+};
+
+class DestroyMagicCard : public SpellCard
+{
+public:
+  virtual string title();
+};
+
+class HealingCard : public SpellCard
+{
+public:
+  virtual string title();
+};
+
+class InvisibilityCard : public SpellCard
+{
+public:
+  virtual string title();
+};
+
+class ImmobilityCard : public SpellCard
+{
+public:
+  virtual string title();
+};
+
+class PreservationCard : public SpellCard
 {
 public:
   virtual string title();

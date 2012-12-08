@@ -1,0 +1,14 @@
+5 SwordCard
+5 BagOfGoldCard
+2 TalismanCard
+2 MarshCard
+2 ShrineCard
+1 GuideCard
+1 WitchCard
+1 PrincessCard
+1 HealerCard
+6 WolfCard
+4 BearCard
+4 WildBoarCard
+2 BlizzardCard
+4 MarketDayCard
