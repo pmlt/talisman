@@ -278,10 +278,24 @@ void SentinelTile::step(Character *character, Game* game, unsigned int movement,
     unsigned char choice = game->getUI()->prompt("You are passing the Sentinel space and you still have movement left. Do you want to cross the Sentinel into the middle region?", options, 2);
     if (choice == 0) {
       //Cross!
-      MapTile* dest = game->getBoard()->find("Hills (Sentinel)");
-      if (dest != NULL) {
-        dest->land(character, game);
-        return; //Do NOT continue
+      SentinelCard sentinel;
+      Battle battle;
+      int results = battle.cardFight(character, &sentinel, game);
+      if (results == 1) {
+        game->getUI()->announce("You emerge victorious and cross into the middle region...");
+        MapTile* dest = game->getBoard()->find("Hills (Sentinel)");
+        if (dest != NULL) {
+          dest->land(character, game);
+          return; //Do NOT continue
+        }
+      }
+      else if (results == 0) {
+        game->getUI()->announce("After a great battle, no victor emerges. Too tired to go on, you remain on the Sentinel space.");
+        return this->land(character, game);
+      }
+      else {
+        game->getUI()->announce("After a great battle, the Sentinel gets the better of you. You lose a life, and are too tired to move on.");
+        return this->land(character, game);
       }
     }
   }
