@@ -137,6 +137,18 @@ public:
   unsigned int remainingCapacity() const;
 
   /*
+    Method: inventory
+    Returns the inventory of the character.
+  */
+  vector<ObjectCard*>const & inventory() const;
+
+  /*
+    Method: spells
+    Returns the spellbook of the character.
+  */
+  vector<SpellCard*>const & spells() const;
+
+  /*
     Method: startPosition
     Returns the starting position of the character.
   */
@@ -236,8 +248,8 @@ private:
 
   MapTile* _position;
 
-  std::vector<ObjectCard*> inventory;
-  std::vector<SpellCard*> spells;
+  std::vector<ObjectCard*> _inventory;
+  std::vector<SpellCard*> _spells;
   std::vector<FollowerCard*> followers;
 };
 

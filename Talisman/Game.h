@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <queue>
-#include <stack>
 #include "Character.h"
 #include "Board.h"
 #include "AdventureCard.h"
@@ -111,6 +110,6 @@ private:
   vector<Character*> players;
   queue<Character*> player_turns;
   Board* board;
-  stack<AdventureCard*> adventure_deck;
-  stack<AdventureCard*> purchase_deck;
+  queue<AdventureCard*> adventure_deck;
+  queue<AdventureCard*> purchase_deck;
 };

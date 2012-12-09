@@ -113,7 +113,6 @@ void DrawCardsTile::land(Character* character, Game* game)
     AdventureCard* card = cards[i];
     bool remove = card->encounter(character, game);
     if (remove) {
-      game->discardAdventureCard(card);
       cards.erase(cards.begin()+i);
       i--;
     }
