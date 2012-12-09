@@ -38,6 +38,10 @@ void AdventureCard::createDeckFromFile(std::string deck_file, std::vector<Advent
         if (ident == "SwordCard") c = new SwordCard();
         else if (ident == "BagOfGoldCard") c = new BagOfGoldCard();
         else if (ident == "TalismanCard") c = new TalismanCard();
+        else if (ident == "WaterBottleCard") c = new WaterBottleCard();
+        else if (ident == "ShieldCard") c = new ShieldCard();
+        else if (ident == "AxeCard") c = new AxeCard();
+        else if (ident == "RaftCard") c = new RaftCard();
         else if (ident == "WitchCard") c = new WitchCard();
         else if (ident == "HealerCard") c = new HealerCard();
         else if (ident == "PrincessCard") c = new PrincessCard();
@@ -111,7 +115,8 @@ bool ObjectCard::encounter(Character* character, Game* game)
   }
 }
 
-
+unsigned int EnemyCard::strength() const { return 0; }
+unsigned int EnemyCard::craft() const { return 0; }
 bool EnemyCard::encounter(Character* character, Game* game)
 {
   game->getUI()->announce("You have encountered a " + this->title() + "!");
@@ -132,6 +137,10 @@ bool BagOfGoldCard::encounter(Character* character, Game* game)
 }
 
 string TalismanCard::title() { return "Talisman"; }
+string WaterBottleCard::title() { return "Water Bottle"; }
+string ShieldCard::title() { return "Shield"; }
+string AxeCard::title() { return "Axe"; }
+string RaftCard::title() { return "Raft"; }
 
 string WitchCard::title() { return "Witch"; }
 string HealerCard::title() { return "Healer"; }
@@ -142,8 +151,11 @@ string ShrineCard::title() { return "Shrine"; }
 string BlizzardCard::title() { return "Blizzard"; }
 string MarketDayCard::title() { return "Market Day"; }
 string WolfCard::title() { return "Wolf"; }
+unsigned int WolfCard::strength() const { return 2; }
 string WildBoarCard::title() { return "Wild Boar"; }
+unsigned int WildBoarCard::strength() const { return 1; }
 string BearCard::title() { return "Bear"; }
+unsigned int BearCard::strength() const { return 3; }
 string CounterSpellCard::title() { return "CounterSpell"; }
 string DestroyMagicCard::title() { return "DestroyMagic"; }
 string HealingCard::title() { return "Healing"; }

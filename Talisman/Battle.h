@@ -49,6 +49,12 @@ class Battle{
       2 = initiator loses
     */
     int result(int r1, int r2);
+
+    /*
+      Method: promptSpells
+      Prompts the player to use a spell
+    */
+    void promptSpells(Character * c, Game * game);
     
 };
 

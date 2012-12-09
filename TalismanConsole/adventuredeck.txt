@@ -1,5 +1,9 @@
 5 SwordCard
 5 BagOfGoldCard
+1 RaftCard
+5 ShieldCard
+3 AxeCard
+3 WaterBottleCard
 2 TalismanCard
 2 MarshCard
 2 ShrineCard

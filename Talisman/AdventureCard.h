@@ -33,6 +33,8 @@ public:
   string type();
   void type(string type);
   virtual bool encounter(Character* character, Game* game);
+  virtual unsigned int strength() const;
+  virtual unsigned int craft() const;
 private:
   string _type;
 };
@@ -80,6 +82,30 @@ class BagOfGoldCard : public ObjectCard
 public:
   virtual string title();
   virtual bool encounter(Character* character, Game* game);
+};
+
+class WaterBottleCard : public ObjectCard
+{
+public:
+  virtual string title();
+};
+
+class ShieldCard : public ObjectCard
+{
+public:
+  virtual string title();
+};
+
+class AxeCard : public ObjectCard
+{
+public:
+  virtual string title();
+};
+
+class RaftCard : public ObjectCard
+{
+public:
+  virtual string title();
 };
 
 class TalismanCard : public ObjectCard
@@ -140,18 +166,27 @@ class WolfCard : public EnemyCard
 {
 public:
   virtual string title();
+  virtual unsigned int strength() const;
 };
 
 class WildBoarCard : public EnemyCard
 {
 public:
   virtual string title();
+  virtual unsigned int strength() const;
 };
 
 class BearCard : public EnemyCard
 {
 public:
   virtual string title();
+  virtual unsigned int strength() const;
+};
+
+class SentinelCard : public EnemyCard
+{
+public:
+  virtual unsigned int strength() const;
 };
 
 class CounterSpellCard : public SpellCard

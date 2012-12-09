@@ -270,6 +270,44 @@ unsigned int RuinsTile::numCards() const { return 2; }
 string ForestTile::getTitle() const { return "Forest"; }
 
 string PortalOfPowerTile::getTitle() const { return "Portal of Power"; }
+void PortalOfPowerTile::step(Character *character, Game* game, unsigned int movement, unsigned int direction)
+{
+  if (movement > 0) {
+    string options[3] = {
+      "Yes, attempt to open the Portal of Power by picking the lock (Craft).",
+      "Yes, attempt to open the Portal of Power by forcing the lock (Strength).",
+      "No, continue my way in the middle region."
+    };
+    unsigned char choice = game->getUI()->prompt("You are passing the Portal of Power. Do you want to try crossing into the inner region?", options, 3);
+    if (choice == 2) {
+      //Continue normally.
+      return MapTile::step(character, game, movement, direction);
+    }
+    unsigned int roll_value = game->roll() + game->roll();
+    unsigned ability_value = choice == 1 ? character->strength() : character->craft();
+    if (roll_value <= ability_value) {
+      //Success!
+      game->getUI()->announce("You successfully open the Portal of Power...");
+      MapTile* dest = game->getBoard()->find("Plains of Peril");
+      if (dest != NULL) {
+        return dest->land(character, game); //Do NOT continue
+      }
+    }
+    else {
+      if (choice == 0) {
+        character->decrementCraft();
+        game->getUI()->announce("You failed to pick the lock... you lost one craft!");
+      }
+      else {
+        character->decrementStrength();
+        game->getUI()->announce("You failed to force the lock... you lost one strength!");
+      }
+      return this->land(character, game); // Do NOT continue
+    }
+  }
+  //Continue normally
+  MapTile::step(character, game, movement, direction);
+}
 
 string BlackKnightTile::getTitle() const { return "Black Knight"; }
 
@@ -288,7 +326,7 @@ string DesertTile::getTitle() const { return "Desert"; }
 void DesertTile::land(Character* character, Game* game)
 {
   //Check if character has Water Bottle.
-  if (character->hasObject("Water Bottle")) {
+  if (character->findObject("Water Bottle") != NULL) {
     game->getUI()->announce("It is scalding hot here, but your Water Bottle helps you endure the heat.");
     return MapTile::land(character, game);
   }

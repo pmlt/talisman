@@ -107,10 +107,22 @@ public:
   void incrementStrength();
 
   /*
+    Method: decrementStrength
+    Lose 1 strength.
+  */
+  void decrementStrength();
+
+  /*
     Method: incrementCraft
     Gain 1 craft.
   */
   void incrementCraft();
+
+  /*
+    Method: decrementCraft
+    Lose 1 craft.
+  */
+  void decrementCraft();
 
   /*
     Method: setGold
@@ -140,13 +152,13 @@ public:
     Method: hasObject
     Look up a character's inventory by title
   */
-  bool hasObject(string object_title) const;
+  ObjectCard* findObject(string object_title) const;
 
   /*
     Method: hasSpell
     Look up a character's spellbook by title
   */
-  bool hasSpell(string spell_title) const;
+  SpellCard* findSpell(string spell_title) const;
 
   /*
     Method: inventory

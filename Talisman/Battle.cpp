@@ -28,6 +28,9 @@ void Battle::cardFight(Character * character, AdventureCard * card, Game * game)
     Step 2:
     Cast spells
   */
+  if (!character->spells().empty())
+    promptSpells(character, game);
+
 
   /*
     Step 3 & 4:
@@ -210,4 +213,10 @@ int Battle::useFate(int r1, Character * character, Game * game)
   }
   
   return r1;
+}
+
+void Battle::promptSpells(Character * c, Game * game)
+{
+  //check for invisibility
+
 }

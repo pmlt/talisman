@@ -67,18 +67,18 @@ vector<ObjectCard*> const & Character::inventory() const { return _inventory; }
 vector<SpellCard*> const & Character::spells() const { return _spells; }
 MapTile* Character::position() const { return this->_position; }
 
-bool Character::hasObject(string object_title) const {
+ObjectCard* Character::findObject(string object_title) const {
   for (auto it = _inventory.begin(); it != _inventory.end(); it++) {
-    if ((*it)->title() == object_title) return true;
+    if ((*it)->title() == object_title) return (*it);
   }
-  return false;
+  return NULL;
 }
 
-bool Character::hasSpell(string spell_title) const {
+SpellCard* Character::findSpell(string spell_title) const {
   for (auto it = _spells.begin(); it != _spells.end(); it++) {
-    if ((*it)->title() == spell_title) return true;
+    if ((*it)->title() == spell_title) return (*it);
   }
-  return false;
+  return NULL;
 }
 
 bool Character::isToad() const { return this->is_toad; }
@@ -170,6 +170,15 @@ void Character::incrementStrength() {
 }
 void Character::incrementCraft() {
   base_craft++;
+  recompute();
+}
+
+void Character::decrementStrength() {
+  base_strength--;
+  recompute();
+}
+void Character::decrementCraft() {
+  base_craft--;
   recompute();
 }
 
