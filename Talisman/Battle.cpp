@@ -11,13 +11,15 @@ Battle::~Battle()
 {
 }
 
-void Battle::cardFight(Character * character, AdventureCard * card, Game * game)
+int Battle::cardFight(Character * character, EnemyCard * card, Game * game)
 {
   system("cls");
   int enemyStrength = 3; //Enemy strength placeholder
   int r1, r2;
   r1 = game->roll();
   r2 = game->roll();
+  bool evasion = false;
+  bool save = false;
 
   /*
     Step 1:
@@ -29,8 +31,14 @@ void Battle::cardFight(Character * character, AdventureCard * card, Game * game)
     Cast spells
   */
   if (!character->spells().empty())
-    promptSpells(character, game);
+    evasion = evade(character, game);
 
+  if (evasion)
+  {
+    game->getUI()->announce("You have chosen to evade the battle.");
+    system("pause");
+    return 0;
+  }
 
   /*
     Step 3 & 4:
@@ -56,34 +64,41 @@ void Battle::cardFight(Character * character, AdventureCard * card, Game * game)
   int result = this->result(character->strength() + r1, enemyStrength + r2);
   switch (result){
   case 0:
-    cout << character->name() << " wins!" << endl;
+    game->getUI()->announce(character->name() + " wins!" );
     //increase trophies
     //remove enemy
+    system("pause");
+    return 1;
     break;
   case 1:
-    cout << "Draw!" << endl;
+    game->getUI()->announce("Draw!");
     //enemy stays in place
+    system("pause");
+    return 0;
     break;
   case 2:
-    cout << character->name() << " loses!" << endl;
-    character->setLife(character->life() - 1);
-    //check if character is dead
+    game->getUI()->announce(character->name() + " loses!");
+    save = saveLife(character, game);
+    if (!save)
+      character->lifeLost();
     //enemy stays in place
+    system("pause");
+    return -1;
     break;
   }
 
-  cout << endl;
-  system("pause");
+  
 
 }
 
-void Battle::playerFight(Character * c1, Character * c2, Game * game)
+
+int Battle::playerFight(Character * c1, Character * c2, Game * game)
 {
   system("cls");
   int r1, r2;
   r1 = game->roll();
   r2 = game->roll();
-
+  bool evasion;
   /*
     Step 1:
     Choice to evade
@@ -93,6 +108,26 @@ void Battle::playerFight(Character * c1, Character * c2, Game * game)
     Step 2:
     Cast spells
   */
+  if (!c1->spells().empty())
+    evasion = evade(c1, game);
+
+  if (evasion)
+  {
+    game->getUI()->announce("You have chosen to evade the battle.");
+    system("pause");
+    return 0;
+  }
+
+  if (!c2->spells().empty())
+    evasion = evade(c2, game);
+
+  if (evasion)
+  {
+    game->getUI()->announce("You have chosen to evade the battle.");
+    system("pause");
+    return 0;
+  }
+
 
   /*
     Step 3 & 4:
@@ -125,17 +160,22 @@ void Battle::playerFight(Character * c1, Character * c2, Game * game)
   switch (result){
   case 0:
     playerWin(c1, c2, game);
+    system("pause");
+    return 1;
     break;
   case 1:
-    cout << "Draw!" << endl;
+    game->getUI()->announce("Draw!");
+    return 0;
+    system("pause");
     break;
   case 2:
     playerWin(c2, c1, game);
+    system("pause");
+    return -1;
     break;
   }
-  
-  cout << endl;
   system("pause");
+
 }
 
 int Battle::warriorAbility(int r1, Character * character, Game * game)
@@ -184,10 +224,13 @@ void Battle::playerWin(Character * winner, Character * loser, Game * game)
   switch (choice)
   {
   case 0: 
-    loser->setLife(loser->life() - 1);
+    if (!saveLife(loser, game))
+      loser->lifeLost();
+    game->getUI()->announce(loser->name() + " loses 1 life.");
     break;
   case 1:
     loser->setGold(loser->gold() - 1);
+    game->getUI()->announce(loser->name() + " loses 1 gold.");
     break;
   case 2:
     //take an object
@@ -215,8 +258,45 @@ int Battle::useFate(int r1, Character * character, Game * game)
   return r1;
 }
 
-void Battle::promptSpells(Character * c, Game * game)
+bool Battle::evade(Character * c, Game * game)
 {
   //check for invisibility
+  if (c->hasSpell("Invisibility"))
+  {
+    string options[2] = 
+    {
+      "Yes",
+      "No"
+    };
+    unsigned char choice = game->getUI()->prompt(c->name() + ", you have the Invisibility spell. Will you use it to evade the battle?", options, 2);
 
+    if (choice == 0)
+    {
+      //drop spell
+      return true;
+    }
+    else
+      return false;
+  }
+}
+
+bool Battle::saveLife(Character * c, Game * game)
+{
+  if (c->hasObject("Shield"))
+  {
+    string options[2] = 
+    {
+      "Yes",
+      "No"
+    };
+    unsigned char choice = game->getUI()->prompt(c->name() + ", you have a shield. Would you like to use it to protect yourself?", options, 2);
+
+    if (choice == 0)
+    {
+      //drop shield
+      return true;
+    }
+    else
+      return false;
+  }
 }
