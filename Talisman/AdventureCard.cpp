@@ -86,6 +86,30 @@ void EnemyCard::type(string type) { this->_type = type; }
 
 string ObjectCard::type() { return this->_type; }
 void ObjectCard::type(string type) { this->_type = type; }
+bool ObjectCard::encounter(Character* character, Game* game)
+{
+  unsigned int cap = character->remainingCapacity();
+  if (cap <= 0) {
+    game->getUI()->announce("You find a " + this->title() + " lying on the ground, but you cannot carry any more items.");
+    const vector<ObjectCard*> items = character->inventory();
+    string* options = new string[items.size()+1];
+    for (unsigned int i=0; i < items.size(); i++) {
+      options[i] = items[i]->title();
+    }
+    options[items.size()] = "Don't pick up the " + this->title();
+    unsigned int choice = game->getUI()->prompt("Drop an another item to pick up the " + this->title() + "?", options, items.size()+1);
+    delete[] options;
+    if (choice == items.size()) return false; //Don't pick up, leave as-is
+    character->drop(items[choice]);
+    character->pickup(this);
+    return true;
+  }
+  else {
+    game->getUI()->announce("You find a " + this->title() + " lying on the ground. You pick it up.");
+    character->pickup(this);
+    return true;
+  }
+}
 
 
 bool EnemyCard::encounter(Character* character, Game* game)
@@ -97,8 +121,18 @@ bool EnemyCard::encounter(Character* character, Game* game)
 }
 
 string SwordCard::title() { return "Sword"; }
+
 string BagOfGoldCard::title() { return "Bag of Gold"; }
+bool BagOfGoldCard::encounter(Character* character, Game* game)
+{
+  game->getUI()->announce("You find a bag of gold lying on the ground. There are two gold coins inside.");
+  character->setGold(character->gold() + 2);
+  game->discardAdventureCard(this);
+  return true;
+}
+
 string TalismanCard::title() { return "Talisman"; }
+
 string WitchCard::title() { return "Witch"; }
 string HealerCard::title() { return "Healer"; }
 string PrincessCard::title() { return "Princess"; }

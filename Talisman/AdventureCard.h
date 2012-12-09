@@ -42,6 +42,7 @@ class ObjectCard : public AdventureCard
 public:
   string type();
   void type(string type);
+  virtual bool encounter(Character* character, Game* game);
 private:
   string _type;
 };
@@ -78,6 +79,7 @@ class BagOfGoldCard : public ObjectCard
 {
 public:
   virtual string title();
+  virtual bool encounter(Character* character, Game* game);
 };
 
 class TalismanCard : public ObjectCard

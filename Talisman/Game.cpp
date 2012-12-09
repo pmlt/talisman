@@ -93,7 +93,7 @@ void Game::addAdventureCard(AdventureCard &card)
 
 AdventureCard* Game::drawAdventureCard()
 {
-  auto card = this->adventure_deck.top();
+  auto card = this->adventure_deck.front();
   this->adventure_deck.pop();
   return card;
 }

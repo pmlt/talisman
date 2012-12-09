@@ -62,7 +62,9 @@ int Character::fate() const { return this->fate_counters; }
 int Character::gold() const { return this->gold_counters; }
 float Character::alignment() const { return this->_alignment; }
 unsigned int Character::capacity() const { return this->effective_capacity; }
-unsigned int Character::remainingCapacity() const { return effective_capacity - inventory.size(); }
+unsigned int Character::remainingCapacity() const { return effective_capacity - _inventory.size(); }
+vector<ObjectCard*> const & Character::inventory() const { return _inventory; }
+vector<SpellCard*> const & Character::spells() const { return _spells; }
 MapTile* Character::position() const { return this->_position; }
 
 bool Character::isToad() const { return this->is_toad; }
@@ -89,24 +91,24 @@ void Character::move(MapTile* new_position)
 
 void Character::pickup(ObjectCard* item)
 {
-  if (this->inventory.size() >= this->capacity()) {
+  if (this->_inventory.size() >= this->capacity()) {
     throw InventoryFullException();
   }
-  this->inventory.push_back(item);
+  this->_inventory.push_back(item);
   this->recompute();
 }
 
 void Character::pickup(SpellCard* spell)
 {
-  this->spells.push_back(spell);
+  this->_spells.push_back(spell);
   this->recompute();
 }
 
 void Character::drop(ObjectCard* item)
 {
-  for (unsigned int i=0; i < this->inventory.size(); i++) {
-    if (item == this->inventory[i]) {
-      this->inventory.erase(this->inventory.begin()+i);
+  for (unsigned int i=0; i < this->_inventory.size(); i++) {
+    if (item == this->_inventory[i]) {
+      this->_inventory.erase(this->_inventory.begin()+i);
       this->recompute();
       return;
     }
@@ -116,9 +118,9 @@ void Character::drop(ObjectCard* item)
 
 void Character::drop(SpellCard* spell)
 {
-  for (unsigned int i=0; i < this->spells.size(); i++) {
-    if (spell == this->spells[i]) {
-      this->spells.erase(this->spells.begin()+i);
+  for (unsigned int i=0; i < this->_spells.size(); i++) {
+    if (spell == this->_spells[i]) {
+      this->_spells.erase(this->_spells.begin()+i);
       this->recompute();
       return;
     }
@@ -138,7 +140,7 @@ void Character::recompute()
   }
   this->effective_capacity = this->base_capacity;
   
-  // Take into account items in inventory
+  // Take into account items in _inventory
   // (TODO)
 
   // Take into account current position 
