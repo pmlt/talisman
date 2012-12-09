@@ -98,6 +98,11 @@ AdventureCard* Game::drawAdventureCard()
   return card;
 }
 
+void Game::discardAdventureCard(AdventureCard* card)
+{
+  this->adventure_deck.push(card);
+}
+
 unsigned char Game::roll() const
 {
   return (rand() % 6) + 1;;

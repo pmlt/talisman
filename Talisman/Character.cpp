@@ -16,6 +16,7 @@ Character::Character(int life, int strength, int craft, int fate) :
 
     fate_counters(fate), 
     gold_counters(1), 
+    _alignment(0),
     is_toad(false), 
     base_capacity(DEFAULT_CAPACITY),
     _position(NULL)
@@ -54,11 +55,14 @@ void Character::createFromFile(string character_file, std::vector<Character*> &v
 }
 
 int Character::life() const { return this->life_counters; }
+int Character::lifeLost() const { return this->starting_life - this->life_counters; }
 int Character::strength() const { return this->effective_strength; }
 int Character::craft() const { return this->effective_craft; }
 int Character::fate() const { return this->fate_counters; }
 int Character::gold() const { return this->gold_counters; }
+float Character::alignment() const { return this->_alignment; }
 unsigned int Character::capacity() const { return this->effective_capacity; }
+unsigned int Character::remainingCapacity() const { return effective_capacity - inventory.size(); }
 MapTile* Character::position() const { return this->_position; }
 
 bool Character::isToad() const { return this->is_toad; }
@@ -92,11 +96,29 @@ void Character::pickup(ObjectCard* item)
   this->recompute();
 }
 
+void Character::pickup(SpellCard* spell)
+{
+  this->spells.push_back(spell);
+  this->recompute();
+}
+
 void Character::drop(ObjectCard* item)
 {
   for (unsigned int i=0; i < this->inventory.size(); i++) {
     if (item == this->inventory[i]) {
       this->inventory.erase(this->inventory.begin()+i);
+      this->recompute();
+      return;
+    }
+  }
+  throw NotInInventoryException();
+}
+
+void Character::drop(SpellCard* spell)
+{
+  for (unsigned int i=0; i < this->spells.size(); i++) {
+    if (spell == this->spells[i]) {
+      this->spells.erase(this->spells.begin()+i);
       this->recompute();
       return;
     }
@@ -126,6 +148,15 @@ void Character::recompute()
   this->notify();
 }
 
+void Character::incrementStrength() {
+  base_strength++;
+  recompute();
+}
+void Character::incrementCraft() {
+  base_craft++;
+  recompute();
+}
+
 void Character::setFate(int newFate)
 {
   fate_counters = newFate;
@@ -134,6 +165,10 @@ void Character::setFate(int newFate)
 void Character::setGold(int newGold)
 {
   gold_counters = newGold;
+}
+
+void Character::setAlignment(float alignment) {
+  _alignment = alignment;
 }
 
 void Character::setLife(int newLife)

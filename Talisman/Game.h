@@ -78,6 +78,12 @@ public:
   AdventureCard* drawAdventureCard();
 
   /*
+    Method: discardAdventureCard
+    Put back a card into the adventure deck.
+  */
+  void discardAdventureCard(AdventureCard* card);
+
+  /*
     Method: roll
     Roll the dice!
   */
