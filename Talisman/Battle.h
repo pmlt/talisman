@@ -15,13 +15,13 @@ class Battle{
       Method: cardFight
       Initiates player versus encounter card battle
     */
-    void cardFight(Character * character, AdventureCard * card, Game * game);
+    int cardFight(Character * character, EnemyCard * card, Game * game);
 
     /*
       Method: playerFight
       Initiates player versus player battle
     */
-    void playerFight(Character * c1, Character * c2, Game * game);
+    int playerFight(Character * c1, Character * c2, Game * game);
 
     /*
       Method: playerWin
@@ -51,10 +51,16 @@ class Battle{
     int result(int r1, int r2);
 
     /*
-      Method: promptSpells
-      Prompts the player to use a spell
+      Method: evade
+      Prompts the player to use a spell to evade combat
     */
-    void promptSpells(Character * c, Game * game);
+    bool evade(Character * c, Game * game);
+
+    /*
+      Method: saveLife
+      Checks through all possible spells/items the player has to negate losing life
+    */
+    bool saveLife(Character * c, Game * game);
     
 };
 
