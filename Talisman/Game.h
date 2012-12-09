@@ -24,7 +24,7 @@ public:
     Method: init
     Initialize the singleton using files for content.
   */
-  static Game* init(string map_file, string character_file, string adventure_deck_file, string purchase_deck_file);
+  static Game* init(string map_file, string adventure_deck_file, string purchase_deck_file);
 
   /*
     Method: destroy
