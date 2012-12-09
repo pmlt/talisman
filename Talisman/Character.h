@@ -1,7 +1,6 @@
 #pragma once
 
 #include "AdventureCard.h"
-#include "Spell.h"
 #include "MapTile.h"
 #include "Observable.h"
 #include "TException.h"
@@ -52,6 +51,12 @@ public:
   int life() const;
 
   /*
+    Method: lifeLost
+    Returns the difference between starting life and current life.
+  */
+  int lifeLost() const;
+
+  /*
     Method: setLife
     Sets the current life amount of the character
   */
@@ -89,6 +94,23 @@ public:
     Returns the current number of gold tokens of the character.
   */
   int gold() const;
+  /*
+    Method: alignment
+    Returns the alignment of the character (-1 = most evil to 1 = most good)
+  */
+  float alignment() const;
+
+  /*
+    Method: incrementStrength
+    Gain 1 strength.
+  */
+  void incrementStrength();
+
+  /*
+    Method: incrementCraft
+    Gain 1 craft.
+  */
+  void incrementCraft();
 
   /*
     Method: setGold
@@ -97,10 +119,22 @@ public:
   void setGold(int);
 
   /*
+    Method: setAlignment
+    Sets the alignment of the character.
+  */
+  void setAlignment(float alignment);
+
+  /*
     Method: capacity
     Returns the carrying capacity of the character.
   */
   unsigned int capacity() const;
+
+  /*
+    Method: remainingCapacity
+    Returns the number of free slots in the character's inventory.
+  */
+  unsigned int remainingCapacity() const;
 
   /*
     Method: startPosition
@@ -148,6 +182,12 @@ public:
   void pickup(ObjectCard* item);
 
   /*
+    Method: pickup
+    Pick up a spell and add it to character's spellbook.
+  */
+  void pickup(SpellCard* item);
+
+  /*
     Method: drop
     Drop an item from inventory and places it on the current map tile.
 
@@ -155,6 +195,15 @@ public:
       NotInInventoryException - The item could not be found in inventory.
   */
   void drop(ObjectCard* item);
+
+  /*
+    Method: drop
+    Drop a spell from spellbook and places it on the current map tile.
+
+    Throws:
+      NotInInventoryException - The item could not be found in spellbook.
+  */
+  void drop(SpellCard* item);
 
 protected:
   /*
@@ -179,6 +228,7 @@ private:
 
   int fate_counters;
   int gold_counters;
+  float _alignment;
 
   unsigned int base_capacity;
   unsigned int effective_capacity;
@@ -187,7 +237,7 @@ private:
   MapTile* _position;
 
   std::vector<ObjectCard*> inventory;
-  std::vector<Spell*> spells;
+  std::vector<SpellCard*> spells;
   std::vector<FollowerCard*> followers;
 };
 

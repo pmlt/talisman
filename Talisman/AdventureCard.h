@@ -20,7 +20,7 @@ public:
   unsigned char number();
   void number(unsigned char number);
 
-  virtual void encounter(Character* character, Game* game);
+  virtual bool encounter(Character* character, Game* game);
 
 private:
   unsigned char _number; //encounter number
@@ -32,6 +32,7 @@ class EnemyCard : public AdventureCard
 public:
   string type();
   void type(string type);
+  virtual bool encounter(Character* character, Game* game);
 private:
   string _type;
 };

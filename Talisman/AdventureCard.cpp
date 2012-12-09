@@ -34,7 +34,7 @@ void AdventureCard::createDeckFromFile(std::string deck_file, std::vector<Advent
       unsigned int howmany = line[0] - ASCII0;
       ident = line.substr(2);
       
-      for (int i=0; i < howmany; i++) {
+      for (unsigned int i=0; i < howmany; i++) {
         if (ident == "SwordCard") c = new SwordCard();
         else if (ident == "BagOfGoldCard") c = new BagOfGoldCard();
         else if (ident == "TalismanCard") c = new TalismanCard();
@@ -74,10 +74,11 @@ void AdventureCard::setPurchaseCard(bool isPurchase) { _isPurchaseCard = isPurch
 unsigned char AdventureCard::number() { return this->_number; }
 void AdventureCard::number(unsigned char number) { this->_number = number; }
 
-void AdventureCard::encounter(Character* character, Game* game)
+bool AdventureCard::encounter(Character* character, Game* game)
 {
   //Demo: just print card's title for now
   game->getUI()->announce("You have encountered the " + this->title() + "!");
+  return true;
 }
 
 string EnemyCard::type() { return this->_type; }
@@ -85,6 +86,15 @@ void EnemyCard::type(string type) { this->_type = type; }
 
 string ObjectCard::type() { return this->_type; }
 void ObjectCard::type(string type) { this->_type = type; }
+
+
+bool EnemyCard::encounter(Character* character, Game* game)
+{
+  game->getUI()->announce("You have encountered a " + this->title() + "!");
+  Battle * battle = new Battle();
+  battle->cardFight(character, this, game);
+  return true; // XXX need to return TRUE ONLY if player won the fight
+}
 
 string SwordCard::title() { return "Sword"; }
 string BagOfGoldCard::title() { return "Bag of Gold"; }
