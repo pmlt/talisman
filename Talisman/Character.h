@@ -209,6 +209,18 @@ public:
   void move(MapTile* new_position);
 
   /*
+    Method: addTrophy
+    Add a trophy to the list of trophies.
+  */
+  void addTrophy(EnemyCard* card);
+
+  /*
+    Method: cashInTrophies
+    Cash-in trophies for increased strength and/or craft.
+  */
+  void cashInTrophies(Game* game);
+
+  /*
     Method: pickup
     Pick up an item and add it to the character's inventory.
 
@@ -272,6 +284,7 @@ private:
 
   MapTile* _position;
 
+  std::vector<EnemyCard*> _trophies;
   std::vector<ObjectCard*> _inventory;
   std::vector<SpellCard*> _spells;
   std::vector<FollowerCard*> followers;

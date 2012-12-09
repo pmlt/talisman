@@ -133,6 +133,9 @@ void Game::start()
     MapTile* t = c->position();
     t->start(c, this);
 
+    // Cash-in trophies if any
+    c->cashInTrophies(this);
+
     this->player_turns.pop();
     this->player_turns.push(c);
   }
