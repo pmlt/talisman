@@ -28,8 +28,9 @@ public:
       strength - Base strength value (as shown on the character card)
       craft    - Base craft value (as shown on the character card)
       fate     - Starting amount of fate (as shown on the character card)
+      align    - Starting alignment (as shown on the character card)
   */
-	Character(int life, int strength, int craft, int fate);
+	Character(int life, int strength, int craft, int fate, float align);
 	virtual ~Character(void);
 
   /*
@@ -320,4 +321,22 @@ public:
   
   virtual std::string name() const { return "Wizard"; }
   virtual std::string startPosition() const { return "Graveyard"; }
+};
+
+class Elf : public Character
+{
+public:
+  Elf();
+
+  virtual std::string name() const { return "Elf"; }
+  virtual std::string startPosition() const { return "Forest"; }
+};
+
+class Assassin : public Character
+{
+public:
+  Assassin();
+
+  virtual std::string name() const { return "Assassin"; }
+  virtual std::string startPosition() const { return "City"; }
 };

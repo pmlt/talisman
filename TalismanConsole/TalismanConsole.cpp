@@ -22,7 +22,6 @@ int main(int argc, char* argv[])
 
   Game* game = NULL;
   string map_file;
-  string character_file;
   string adventure_deck_file;
   string purchase_deck_file;
 
@@ -38,16 +37,8 @@ int main(int argc, char* argv[])
     else if (arg == "-p") {
       purchase_deck_file = argv[i+1];
     }
-    if (arg == "-c") {
-      character_file = argv[i+1];
-    }
   }
   if (map_file.size() <= 0) {
-    print_usage();
-    return 1;
-  }
-
-  if (character_file.size() <= 0) {
     print_usage();
     return 1;
   }
@@ -59,7 +50,7 @@ int main(int argc, char* argv[])
 
   // Construct main Game object by invoking factory method with file paths
   try {
-    game = Game::init(map_file, character_file, adventure_deck_file, purchase_deck_file);
+    game = Game::init(map_file, adventure_deck_file, purchase_deck_file);
   }
   catch (TException* e) {
     cout << "An error occured during initialization: " << e->message() << endl;

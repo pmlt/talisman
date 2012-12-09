@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
 #include <time.h>
+#include <sstream>
 
 Game::Game(void)
 {
@@ -10,25 +11,13 @@ Game::~Game(void)
 {
 }
 
-Game* Game::init(string map_file, string character_file, string adventure_deck_file, string purchase_deck_file)
+Game* Game::init(string map_file, string adventure_deck_file, string purchase_deck_file)
 {
   //Create Game object
   Game* _inst = new Game();
   
   //Create Board object from map_file
   _inst->board = Board::createFromFile(map_file);
-  
-  //Create Character object from character_file
-  Character::createFromFile(character_file, _inst->players);
-  //Place characters on the board
-  for (auto it = _inst->players.begin(); it != _inst->players.end(); it++) {
-    string start_pos = (*it)->startPosition();
-    MapTile* start_tile = _inst->board->find(start_pos);
-    if (start_tile == NULL) throw new TException("Invalid starting position for " + (*it)->name());
-    (*it)->move(start_tile);
-    _inst->player_turns.push(*it);
-  }
-  srand((unsigned int)time(NULL));
 
   //Create card decks from files
   vector<AdventureCard*> v1, v2;
@@ -123,6 +112,56 @@ bool Game::loseLife(Character* character, int life_lost)
 
 void Game::start()
 {
+  //Player setup
+  string howmany[3] = {
+    "Two player", 
+    "Three players", 
+    "Four players"
+  };
+  string playerchoices[4] = {
+    "Warrior",
+    "Wizard",
+    "Elf",
+    "Assassin"
+  };
+  unsigned int choice = ui->prompt("Welcome to Talisman!  How many players will be in this game?", howmany, 3);
+  unsigned int numplayers = choice + 2;
+  for (unsigned int i = 0; i < numplayers; i++) {
+    std::stringstream sstm;
+    sstm << "Player " << (i+1) << ", choose a character:";
+    unsigned int charchosen_idx = ui->prompt(sstm.str(), playerchoices, 4-i);
+    string charchosen = playerchoices[charchosen_idx];
+    Character* newplayer;
+    if (charchosen == "Warrior") {
+      newplayer = new Warrior();
+    }
+    else if (charchosen == "Wizard") {
+      newplayer = new Wizard();
+    }
+    else if (charchosen == "Elf") {
+      newplayer = new Elf();
+    }
+    else if (charchosen == "Assassin") {
+      newplayer = new Assassin();
+    }
+    players.push_back(newplayer);
+    for (int j = charchosen_idx + 1; j < 4; j++) {
+      playerchoices[j-1] = playerchoices[j];
+    }
+  }
+
+  //Place characters on board
+  for (auto it = players.begin(); it != players.end(); it++) {
+    string start_pos = (*it)->startPosition();
+    MapTile* start_tile = board->find(start_pos);
+    if (start_tile == NULL) throw new TException("Invalid starting position for " + (*it)->name());
+    (*it)->move(start_tile);
+    player_turns.push(*it);
+  }
+
+  //Randomize
+  srand((unsigned int)time(NULL));
+
   //Start the whole game!
   while (!this->isFinished()) {
     //Do next player's turn

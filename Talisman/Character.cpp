@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 
-Character::Character(int life, int strength, int craft, int fate) : 
+Character::Character(int life, int strength, int craft, int fate, float alignment) : 
     life_counters(life), 
     starting_life(life),
     
@@ -17,7 +17,7 @@ Character::Character(int life, int strength, int craft, int fate) :
 
     fate_counters(fate), 
     gold_counters(1), 
-    _alignment(0),
+    _alignment(alignment),
     is_toad(false), 
     base_capacity(DEFAULT_CAPACITY),
     _position(NULL)
@@ -246,5 +246,7 @@ void Character::setLife(int newLife)
 
 /******* CHARACTER OVERRIDES *********/
 
-Warrior::Warrior() : Character(5, 4, 2, 1) {}
-Wizard::Wizard() : Character(4, 2, 5, 3) {}
+Warrior::Warrior() : Character(5, 4, 2, 1, 0) {}
+Wizard::Wizard() : Character(4, 2, 5, 3, -1) {}
+Elf::Elf() : Character(4, 3, 4, 3, 1) {}
+Assassin::Assassin() : Character(4, 3, 3, 3, -1) {}
