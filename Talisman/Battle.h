@@ -18,16 +18,28 @@ class Battle{
     int cardFight(Character * character, EnemyCard * card, Game * game);
 
     /*
+      Method: cardPsychic
+      Initiates player versus encounter card battle
+    */
+    int cardPsychic(Character * character, EnemyCard * card, Game * game);
+
+    /*
       Method: playerFight
       Initiates player versus player battle
     */
     int playerFight(Character * c1, Character * c2, Game * game);
 
     /*
+      Method: playerPsychic
+      Initiates player versus player battle
+    */
+    int playerPsychic(Character * c1, Character * c2, Game * game);
+
+    /*
       Method: playerWin
       Outputs the choices the winning player can make
     */
-    void playerWin(Character * winner, Character * loser, Game * game);
+    void playerWin(Character * winner, Character * loser, Game * game, bool ifPsychic);
 
     /*
       Method: warriorAbility
