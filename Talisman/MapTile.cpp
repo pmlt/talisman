@@ -90,12 +90,16 @@ void MapTile::land(Character* character, Game* game)
 {
   //Set the new position
   character->move(this);
+
+  //Call back
+  this->doLand(character, game);
+
   //Redraw
   game->notify();
 }
 
 unsigned int DrawCardsTile::numCards() const { return 1; }
-void DrawCardsTile::land(Character* character, Game* game)
+void DrawCardsTile::doLand(Character* character, Game* game)
 {
   game->getUI()->announce("You have arrived at the " + this->getTitle() + "...");
   //Draw cards
@@ -117,7 +121,6 @@ void DrawCardsTile::land(Character* character, Game* game)
       i--;
     }
   }
-  return MapTile::land(character, game);
 }
 bool sortCard(AdventureCard* a, AdventureCard* b)
 {
@@ -125,7 +128,7 @@ bool sortCard(AdventureCard* a, AdventureCard* b)
 }
 
 string VillageTile::getTitle() const { return "Village"; }
-void VillageTile::land(Character *character, Game* game) {
+void VillageTile::doLand(Character *character, Game* game) {
   GameUI* ui = game->getUI();
   string opts[4] = {
     "Do nothing.",
@@ -142,7 +145,7 @@ void VillageTile::land(Character *character, Game* game) {
     unsigned int cap = character->remainingCapacity();
     if (cap <= 0) {
       ui->announce("Your inventory is full!  You cannot buy anything.");
-      return MapTile::land(character, game);
+      return;
     }
     string items[5] = {
       "Helmet (2G)", 
@@ -217,12 +220,48 @@ void VillageTile::land(Character *character, Game* game) {
       ui->announce("Nothing happens.");
     }
   }
-  return MapTile::land(character, game);
+  return;
 }
 
 string FieldsTile::getTitle() const { return "Fields"; }
 
 string GraveyardTile::getTitle() const { return "Graveyard"; }
+void GraveyardTile::doLand(Character* character, Game* game) {
+  if (character->alignment() > 0) {
+    game->getUI()->announce("You land on the Graveyard; you lose one life due to your Good alignment...");
+    game->loseLife(character, 1);
+  }
+  else if (character->alignment() == 0) {
+    game->getUI()->announce("You land on the Graveyard; you can spend gold to replenish fate.");
+    //XXX replenish fate.
+  }
+  else {
+    string options[2] = {
+      "I want to pray to the evil spirits.",
+      "No, just replenish my Fate."
+    };
+    unsigned int choice = game->getUI()->prompt("You land on the Graveyard; you can pray if you wish...", options, 2);
+    if (choice == 0) {
+      unsigned int roll = game->roll();
+      if (roll == 5) {
+        game->getUI()->announce("You pray and regain one fate.");
+        character->setFate(character->fate()+1);
+      }
+      else if (roll == 6) {
+        game->getUI()->announce("You pray and gain the Invisibility spell!");
+        SpellCard* card = new InvisibilityCard();
+        character->pickup(card);
+      }
+      else {
+        game->getUI()->announce("You pray, but the spirits do not listen...");
+      }
+    }
+    else {
+      game->getUI()->announce("You regain one fate...");
+      character->setFate(character->fate()+1);
+    }
+  }
+}
 
 string WoodsTile::getTitle() const { return "Woods"; }
 
@@ -255,19 +294,85 @@ string HillsTile::getTitle() const { return "Hills"; }
 string SentinelHillsTile::getTitle() const { return "Hills (Sentinel)"; }
 
 string ChapelTile::getTitle() const { return "Chapel"; }
+void ChapelTile::doLand(Character* character, Game* game) {
+  if (character->alignment() < 0) {
+    game->getUI()->announce("You land on the Chapel; you lose one life due to your Evil alignment...");
+    game->loseLife(character, 1);
+  }
+  else if (character->alignment() == 0) {
+    game->getUI()->announce("You land on the Chapel; you spend gold to replenish life.");
+    int life_to_replenish = min(character->lifeLost(), character->gold());
+    character->setLife(character->life() + life_to_replenish);
+    character->setGold(character->gold() - life_to_replenish);
+  }
+  else {
+    string options[2] = {
+      "I want to pray to the good spirits.",
+      "No, just replenish my life for free."
+    };
+    unsigned int choice = game->getUI()->prompt("You land on the Chapel; you can pray if you wish...", options, 2);
+    if (choice == 0) {
+      unsigned int roll = game->roll();
+      if (roll == 5) {
+        game->getUI()->announce("You pray and regain one life.");
+        character->setLife(character->life()+1);
+      }
+      else if (roll == 6) {
+        game->getUI()->announce("You pray and gain the Invisibility spell!");
+        SpellCard* card = new InvisibilityCard();
+        character->pickup(card);
+      }
+      else {
+        game->getUI()->announce("You pray, but the spirits do not listen...");
+      }
+    }
+    else {
+      game->getUI()->announce("You regain all your life...");
+      character->setLife(character->life()+character->lifeLost());
+    }
+  }
+}
 
 string CragsTile::getTitle() const { return "Crags"; }
+void CragsTile::doLand(Character* character, Game* game) {
+  game->getUI()->announce("You arrive at the Crags...");
+  unsigned int roll = game->roll();
+  if (roll == 1) {
+    game->getUI()->announce("You are attacked by an evil Spirit!");
+    SpiritCard spirit;
+    spirit.encounter(character, game);
+  }
+  else if (roll == 2 || roll == 3) {
+    game->getUI()->announce("You are lost...");
+  }
+  else if (roll == 4 || roll == 5) {
+    game->getUI()->announce("You are safe, no effect.");
+  }
+  else {
+    game->getUI()->announce("A Barbarian leads you out; you gain one strength!");
+    character->incrementStrength();
+  }
+}
 
 string PlainsTile::getTitle() const { return "Plains"; }
 
 string CityTile::getTitle() const { return "City"; }
+void CityTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string TavernTile::getTitle() const { return "Tavern"; }
+void TavernTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string RuinsTile::getTitle() const { return "Ruins"; }
 unsigned int RuinsTile::numCards() const { return 2; }
 
 string ForestTile::getTitle() const { return "Forest"; }
+void ForestTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string PortalOfPowerTile::getTitle() const { return "Portal of Power"; }
 void PortalOfPowerTile::step(Character *character, Game* game, unsigned int movement, unsigned int direction)
@@ -310,6 +415,9 @@ void PortalOfPowerTile::step(Character *character, Game* game, unsigned int move
 }
 
 string BlackKnightTile::getTitle() const { return "Black Knight"; }
+void BlackKnightTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string HiddenValleyTile::getTitle() const { return "Hidden Valley"; }
 unsigned int HiddenValleyTile::numCards() const { return 3; }
@@ -319,20 +427,26 @@ string CursedGladeTile::getTitle() const { return "Cursed Glade"; }
 string RunesTile::getTitle() const { return "Runes"; }
 
 string ChasmTile::getTitle() const { return "Chasm"; }
+void ChasmTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string WarlocksCaveTile::getTitle() const { return "Warlock's Cave"; }
+void WarlocksCaveTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string DesertTile::getTitle() const { return "Desert"; }
-void DesertTile::land(Character* character, Game* game)
+void DesertTile::doLand(Character* character, Game* game)
 {
   //Check if character has Water Bottle.
   if (character->findObject("Water Bottle") != NULL) {
     game->getUI()->announce("It is scalding hot here, but your Water Bottle helps you endure the heat.");
-    return MapTile::land(character, game);
+    return DrawCardsTile::doLand(character, game);
   }
   else {
     game->getUI()->announce("It is scalding hot here!  You lose one life.");
-    if (game->loseLife(character, 1)) return MapTile::land(character, game);
+    if (game->loseLife(character, 1)) return DrawCardsTile::doLand(character, game);
   }
 }
 
@@ -340,21 +454,113 @@ string OasisTile::getTitle() const { return "Oasis"; }
 unsigned int OasisTile::numCards() const { return 2; }
 
 string TempleTile::getTitle() const { return "Temple"; }
+void TempleTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string CastleTile::getTitle() const { return "Castle"; }
+void CastleTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string PlainsOfPerilTile::getTitle() const { return "Plains of Peril"; }
+void PlainsOfPerilTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string MinesTile::getTitle() const { return "Mines"; }
+void MinesTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string VampiresTowerTile::getTitle() const { return "Vampire's Tower"; }
+void VampiresTowerTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string PitsTile::getTitle() const { return "Pits"; }
+void PitsTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string ValleyOfFireTile::getTitle() const { return "Valley of Fire"; }
+bool ValleyOfFireTile::hasCrown(Character* character) {
+  return playersVyingForControl.size() == 1 && playersVyingForControl[0] == character;
+}
+void ValleyOfFireTile::start(Character* character, Game* game) {
+  auto it = find(playersVyingForControl.begin(), playersVyingForControl.end(), character);
+  if (it != playersVyingForControl.end()) {
+    //Character is vying for control.
+    if (playersVyingForControl.size() > 1) {
+      fightOtherPlayers(character, game);
+    }
+    else {
+      castCommand(character, game);
+    }
+  }
+}
+void ValleyOfFireTile::doLand(Character* character, Game* game) {
+  bool hasTalisman = character->findObject("Talisman") != NULL;
+  if (hasTalisman) {
+    game->getUI()->announce("You reach the Valley of Fire. Armed with your Talisman, you climb to the Crown of Command.");
+    playersVyingForControl.push_back(character);
+    if (playersVyingForControl.size() > 1) {
+      game->getUI()->announce("At the top, you find other adventurers...");
+      fightOtherPlayers(character, game);
+    }
+    else {
+      game->getUI()->announce("You seize the Crown of Command! Now all that is left is to kill the remaining pests...");
+      castCommand(character, game);
+    }
+  }
+}
+void ValleyOfFireTile::fightOtherPlayers(Character* character, Game* game) {
+  remove(playersVyingForControl.begin(), playersVyingForControl.end(), character);
+  string* options = new string[playersVyingForControl.size()];
+  unsigned int choice = game->getUI()->prompt("You must fight! Which player do you want to fight?", options, playersVyingForControl.size());
+  Character* opponent = playersVyingForControl[choice];
+  playersVyingForControl.push_back(character);
+
+  Battle battle;
+  battle.playerFight(character, opponent, game);
+  auto players = game->getPlayers();
+  if (players.end() == find(players.begin(), players.end(), opponent)) {
+    //Opponent was killed!
+    remove(playersVyingForControl.begin(), playersVyingForControl.end(), opponent);
+  }
+  if (players.end() == find(players.begin(), players.end(), character)) {
+    //Opponent was killed!
+    remove(playersVyingForControl.begin(), playersVyingForControl.end(), character);
+  }
+}
+void ValleyOfFireTile::castCommand(Character* character, Game* game) {
+  game->getUI()->announce("Alone at the top of the Valley of Fire, you rain death on all your opponents...");
+  unsigned int roll = game->roll();
+  if (roll >= 4) {
+    // All other players lose 1 life.
+    auto players = game->getPlayers();
+    for (unsigned int i=0; i < players.size(); i++) {
+      Character* p = players[i];
+      if (p == character) continue;
+      game->loseLife(p, 1);
+    }
+  }
+  else {
+    game->getUI()->announce("The spell misfires and has no effect!");
+  }
+}
 
 string WerewolfDenTile::getTitle() const { return "Werewolf Den"; }
+void WerewolfDenTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string DeathTile::getTitle() const { return "Death"; }
+void DeathTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}
 
 string CryptTile::getTitle() const { return "Crypt"; }
+void CryptTile::doLand(Character* character, Game* game) {
+  // XXX TODO
+}

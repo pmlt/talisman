@@ -156,6 +156,10 @@ string WildBoarCard::title() { return "Wild Boar"; }
 unsigned int WildBoarCard::strength() const { return 1; }
 string BearCard::title() { return "Bear"; }
 unsigned int BearCard::strength() const { return 3; }
+string SpiritCard::title() { return "Spirit"; }
+unsigned int SpiritCard::craft() const { return 4; }
+string SentinelCard::title() { return "Sentinel"; }
+unsigned int SentinelCard::strength() const { return 9; }
 string CounterSpellCard::title() { return "CounterSpell"; }
 string DestroyMagicCard::title() { return "DestroyMagic"; }
 string HealingCard::title() { return "Healing"; }
