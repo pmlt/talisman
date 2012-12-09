@@ -25,6 +25,7 @@ Character::Character(int life, int strength, int craft, int fate) :
 
 Character::~Character(void)
 {
+  if (_position != NULL) _position->removePlayer(this);
 }
 
 void Character::createFromFile(string character_file, std::vector<Character*> &v)
