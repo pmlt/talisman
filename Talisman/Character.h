@@ -137,6 +137,18 @@ public:
   unsigned int remainingCapacity() const;
 
   /*
+    Method: hasObject
+    Look up a character's inventory by title
+  */
+  bool hasObject(string object_title) const;
+
+  /*
+    Method: hasSpell
+    Look up a character's spellbook by title
+  */
+  bool hasSpell(string spell_title) const;
+
+  /*
     Method: inventory
     Returns the inventory of the character.
   */

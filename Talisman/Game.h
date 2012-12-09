@@ -89,6 +89,14 @@ public:
   unsigned char roll() const;
 
   /*
+    Method: loseLife
+    Cause a player to lose some life tokens; the player may die as a result.
+
+    Returns TRUE if player survived or FALSE otherwise.
+  */
+  bool loseLife(Character* character, int life_lost);
+
+  /*
     Method: start
     Start the game session, setting everything in motion.
   */

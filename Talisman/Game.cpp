@@ -108,6 +108,17 @@ unsigned char Game::roll() const
   return (rand() % 6) + 1;;
 }
 
+bool Game::loseLife(Character* character, int life_lost)
+{
+  character->setLife(character->life() - life_lost);
+  if (character->life() <= 0) {
+    ui->announce("The " + character->name() + " has perished!");
+    removePlayer(character);
+    return false;
+  }
+  return true;
+}
+
 void Game::start()
 {
   //Start the whole game!

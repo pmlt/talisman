@@ -355,6 +355,7 @@ class WarlocksCaveTile : public MapTile
 class DesertTile : public DrawCardsTile
 {
   virtual string getTitle() const;
+  virtual void land(Character* character, Game* game);
 };
 
 /*
