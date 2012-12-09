@@ -261,7 +261,7 @@ int Battle::useFate(int r1, Character * character, Game * game)
 bool Battle::evade(Character * c, Game * game)
 {
   //check for invisibility
-  if (c->hasSpell("Invisibility"))
+  if (c->findSpell("Invisibility") != NULL)
   {
     string options[2] = 
     {
@@ -272,7 +272,7 @@ bool Battle::evade(Character * c, Game * game)
 
     if (choice == 0)
     {
-      //drop spell
+      c->drop(c->findSpell("Invisibility"));
       return true;
     }
     else
@@ -282,7 +282,7 @@ bool Battle::evade(Character * c, Game * game)
 
 bool Battle::saveLife(Character * c, Game * game)
 {
-  if (c->hasObject("Shield"))
+  if (c->findObject("Shield") != NULL)
   {
     string options[2] = 
     {
@@ -293,7 +293,7 @@ bool Battle::saveLife(Character * c, Game * game)
 
     if (choice == 0)
     {
-      //drop shield
+      c->drop(c->findObject("Shield"));
       return true;
     }
     else
