@@ -108,7 +108,7 @@ void DrawCardsTile::land(Character* character, Game* game)
     cards.push_back(card);
   }
   sort(cards.begin(), cards.end(), sortCard);
-  for (int i=0; i < cards.size(); i++) {
+  for (unsigned int i=0; i < cards.size(); i++) {
     //Encounter the card!
     AdventureCard* card = cards[i];
     bool remove = card->encounter(character, game);
@@ -285,6 +285,18 @@ string ChasmTile::getTitle() const { return "Chasm"; }
 string WarlocksCaveTile::getTitle() const { return "Warlock's Cave"; }
 
 string DesertTile::getTitle() const { return "Desert"; }
+void DesertTile::land(Character* character, Game* game)
+{
+  //Check if character has Water Bottle.
+  if (character->hasObject("Water Bottle")) {
+    game->getUI()->announce("It is scalding hot here, but your Water Bottle helps you endure the heat.");
+    return MapTile::land(character, game);
+  }
+  else {
+    game->getUI()->announce("It is scalding hot here!  You lose one life.");
+    if (game->loseLife(character, 1)) return MapTile::land(character, game);
+  }
+}
 
 string OasisTile::getTitle() const { return "Oasis"; }
 unsigned int OasisTile::numCards() const { return 2; }
