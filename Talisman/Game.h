@@ -46,6 +46,12 @@ public:
   void setUI(GameUI &ui);
 
   /*
+    Method: getPlayers
+    Returns the list of players.
+  */
+  vector<Character*> const & getPlayers() const;
+
+  /*
     Method: removePlayer
     Removes a player from the session.
   */

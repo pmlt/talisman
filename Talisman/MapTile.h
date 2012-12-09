@@ -47,11 +47,14 @@ public:
     Callback for when a character steps on a tile on his way to another one.
   */
   virtual void step(Character* character, Game* game, unsigned int movement_left, unsigned int direction);
+
+  void land (Character* character, Game* game);
+  
   /*
-    Method: land
+    Method: doLand
     Callback for when a character lands on a tile (his final destination).
   */
-  virtual void land(Character *character, Game* game);
+  virtual void doLand(Character *character, Game* game) = 0;
 
 protected:
   MapTile* cw;
@@ -64,7 +67,7 @@ protected:
 class DrawCardsTile : public MapTile
 {
 public:
-  virtual void land(Character *character, Game* game);
+  virtual void doLand(Character *character, Game* game);
   virtual unsigned int numCards() const;
 };
 bool sortCard(AdventureCard* a, AdventureCard* b);
@@ -85,7 +88,7 @@ bool sortCard(AdventureCard* a, AdventureCard* b);
 class VillageTile : public MapTile
 {
   virtual string getTitle() const;
-  virtual void land(Character *character, Game* game);
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -115,6 +118,7 @@ class FieldsTile : public DrawCardsTile
 class GraveyardTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -135,7 +139,7 @@ class WoodsTile : public DrawCardsTile
   must first defeat the Sentinel with Strength 9. Do not fight the Sentinel
   when crossing from the Middle Region.
 */
-class SentinelTile : public MapTile
+class SentinelTile : public DrawCardsTile
 {
   virtual string getTitle() const;
   virtual void step(Character *character, Game* game, unsigned int movement, unsigned int direction);
@@ -178,6 +182,7 @@ class SentinelHillsTile : public DrawCardsTile
 class ChapelTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -191,6 +196,7 @@ class ChapelTile : public MapTile
 class CragsTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -224,6 +230,7 @@ class PlainsTile : public DrawCardsTile
 class CityTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -239,6 +246,7 @@ class CityTile : public MapTile
 class TavernTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -263,6 +271,7 @@ class RuinsTile : public DrawCardsTile
 class ForestTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -286,6 +295,7 @@ class PortalOfPowerTile : public DrawCardsTile
 class BlackKnightTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -329,6 +339,7 @@ class RunesTile : public DrawCardsTile
 class ChasmTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -346,6 +357,7 @@ class ChasmTile : public MapTile
 class WarlocksCaveTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -356,7 +368,7 @@ class WarlocksCaveTile : public MapTile
 class DesertTile : public DrawCardsTile
 {
   virtual string getTitle() const;
-  virtual void land(Character* character, Game* game);
+  virtual void doLand(Character* character, Game* game);
 };
 
 /*
@@ -389,6 +401,7 @@ class OasisTile : public DrawCardsTile
 class TempleTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -400,6 +413,7 @@ class TempleTile : public MapTile
 class CastleTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -410,6 +424,7 @@ class CastleTile : public MapTile
 class PlainsOfPerilTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -427,6 +442,7 @@ class PlainsOfPerilTile : public MapTile
 class MinesTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -441,6 +457,7 @@ class MinesTile : public MapTile
 class VampiresTowerTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -452,6 +469,7 @@ class VampiresTowerTile : public MapTile
 class PitsTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -462,7 +480,17 @@ class PitsTile : public MapTile
 */
 class ValleyOfFireTile : public MapTile
 {
+public:
   virtual string getTitle() const;
+  virtual void start(Character* character, Game* game);
+  virtual void doLand(Character *character, Game* game);
+
+  bool hasCrown(Character* character);
+
+  void fightOtherPlayers(Character* character, Game* game);
+  void castCommand(Character* character, Game* game);
+private:
+  vector<Character*> playersVyingForControl;
 };
 
 /*
@@ -474,6 +502,7 @@ class ValleyOfFireTile : public MapTile
 class WerewolfDenTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -486,6 +515,7 @@ class WerewolfDenTile : public MapTile
 class DeathTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };
 
 /*
@@ -501,4 +531,5 @@ class DeathTile : public MapTile
 class CryptTile : public MapTile
 {
   virtual string getTitle() const;
+  virtual void doLand(Character *character, Game* game);
 };

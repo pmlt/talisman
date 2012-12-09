@@ -186,7 +186,15 @@ public:
 class SentinelCard : public EnemyCard
 {
 public:
+  virtual string title();
   virtual unsigned int strength() const;
+};
+
+class SpiritCard : public EnemyCard
+{
+public:
+  virtual string title();
+  virtual unsigned int craft() const;
 };
 
 class CounterSpellCard : public SpellCard

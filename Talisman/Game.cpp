@@ -59,6 +59,8 @@ void Game::destroy(Game* game)
 GameUI* Game::getUI() const { return this->ui; }
 void Game::setUI(GameUI &ui) { this->ui = &ui; }
 
+vector<Character*> const & Game::getPlayers() const { return players; }
+
 void Game::removePlayer(Character* c)
 {
   for(vector<int>::size_type i = 0; i != players.size(); i++) {
@@ -134,6 +136,7 @@ void Game::start()
     this->player_turns.pop();
     this->player_turns.push(c);
   }
+  ui->announce("The " + players[0]->name() + " emerges victorious! Congratulations!");
 }
 
 bool Game::isFinished()
@@ -143,7 +146,9 @@ bool Game::isFinished()
   //Victory conditions are:
   //  1 - There is only one player surviving
   //  2 - That player is on the Crown of Command (in the Valley of Fire).
-  return getNumberOfPlayers() == 1 && players[0]->position()->getTitle() == "Valley of Fire";
+  return  getNumberOfPlayers() == 1 && 
+          players[0]->position()->getTitle() == "Valley of Fire" && 
+          dynamic_cast<ValleyOfFireTile*>(players[0]->position())->hasCrown(players[0]);
 }
 
 int Game::getNumberOfPlayers() const
