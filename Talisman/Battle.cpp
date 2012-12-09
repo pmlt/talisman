@@ -14,7 +14,7 @@ Battle::~Battle()
 int Battle::cardFight(Character * character, EnemyCard * card, Game * game)
 {
   system("cls");
-  int enemyStrength = 3; //Enemy strength placeholder
+
   int r1, r2;
   r1 = game->roll();
   r2 = game->roll();
@@ -22,13 +22,8 @@ int Battle::cardFight(Character * character, EnemyCard * card, Game * game)
   bool save = false;
 
   /*
-    Step 1:
-    Choice to evade
-  */
- 
-  /*
-    Step 2:
-    Cast spells
+    Step 1 & 2:
+    Cast spells and/or evade
   */
   if (!character->spells().empty())
     evasion = evade(character, game);
@@ -40,28 +35,32 @@ int Battle::cardFight(Character * character, EnemyCard * card, Game * game)
     return 0;
   }
 
+  //psychic combat check
+  if (card->craft() > 0)
+    return cardPsychic(character, card, game);
+
   /*
     Step 3 & 4:
     Character and creature rolls
   */
   cout << character->name() << " versus " << card->title() << endl << endl;
   cout << "The " << character->name() << " rolls a " << r1 << " for a total of " << character->strength() + r1 << " strength!\n";
-  cout << "The " << card->title() << " rolls a " << r2 << " for a total of " << enemyStrength + r2 << " strength!\n\n";
+  cout << "The " << card->title() << " rolls a " << r2 << " for a total of " << card->strength() + r2 << " strength!\n\n";
   
-  if (character->name() == "Warrior")
+  if ((character->strength() + r1) <= (card->strength() + r2) && character->name() == "Warrior")
     r1 = this->warriorAbility(r1, character, game);
 
-  if (character->fate() > 0)
+  if ((character->strength() + r1) <= (card->strength() + r2) && character->fate() > 0)
     r1 = this->useFate(r1, character, game);
   
-  cout << endl << character->strength() + r1 << " versus " << enemyStrength + r2 << ": ";
+  cout << endl << character->strength() + r1 << " versus " << card->strength() + r2 << ": ";
 
 
   /*
     Step 5:
     Compare
   */
-  int result = this->result(character->strength() + r1, enemyStrength + r2);
+  int result = this->result(character->strength() + r1, card->strength() + r2);
   switch (result){
   case 0:
     game->getUI()->announce(character->name() + " wins!" );
@@ -99,14 +98,10 @@ int Battle::playerFight(Character * c1, Character * c2, Game * game)
   r1 = game->roll();
   r2 = game->roll();
   bool evasion;
-  /*
-    Step 1:
-    Choice to evade
-  */
  
   /*
-    Step 2:
-    Cast spells
+    Step 1 & 2:
+    Cast spells and/or evade
   */
   if (!c1->spells().empty())
     evasion = evade(c1, game);
@@ -128,6 +123,18 @@ int Battle::playerFight(Character * c1, Character * c2, Game * game)
     return 0;
   }
 
+  if (c1->name() == "Wizard")
+  {
+    string options[2] = 
+    {
+      "Yes",
+      "No"
+    };
+    unsigned char choice = game->getUI()->prompt(c1->name() + ", your special ability allows you to initiate psychic combat. Will you?", options, 2);
+
+    if (choice == 0)
+      return playerPsychic(c1, c2, game);
+  }
 
   /*
     Step 3 & 4:
@@ -137,16 +144,16 @@ int Battle::playerFight(Character * c1, Character * c2, Game * game)
   cout << "The " << c1->name() << " rolls a " << r1 << " for a total of " << c1->strength() + r1 << " strength!\n";
   cout << "The " << c2->name() << " rolls a " << r2 << " for a total of " << c2->strength() + r2 << " strength!\n\n";
   
-  if (c1->name() == "Warrior")
+  if ((c1->strength() + r1) <= (c2->strength() + r2) && c1->name() == "Warrior")
     r1 = this->warriorAbility(r1, c1, game);
 
-  if (c2->name() == "Warrior")
+  if ((c2->strength() + r2) <= (c1->strength() + r1) && c2->name() == "Warrior")
     r2 = this->warriorAbility(r2, c2, game);
   
-  if (c1->fate() > 0)
+  if ((c1->strength() + r1) <= (c2->strength() + r2) && c1->fate() > 0)
     r1 = this->useFate(r1, c1, game);
 
-  if (c2->fate() > 0)
+  if ((c2->strength() + r2) <= (c1->strength() + r1) && c2->fate() > 0)
     r2 = this->useFate(r2, c2, game);
 
   cout << endl << c1->strength() + r1 << " versus " << c2->strength() + r2 << ": ";
@@ -159,7 +166,7 @@ int Battle::playerFight(Character * c1, Character * c2, Game * game)
   int result = this->result(c1->strength() + r1, c2->strength() + r2);
   switch (result){
   case 0:
-    playerWin(c1, c2, game);
+    playerWin(c1, c2, game, false);
     system("pause");
     return 1;
     break;
@@ -169,7 +176,7 @@ int Battle::playerFight(Character * c1, Character * c2, Game * game)
     system("pause");
     break;
   case 2:
-    playerWin(c2, c1, game);
+    playerWin(c2, c1, game, false);
     system("pause");
     return -1;
     break;
@@ -209,7 +216,7 @@ int Battle::result(int r1, int r2)
   return 1; //make compiler happy
 }
 
-void Battle::playerWin(Character * winner, Character * loser, Game * game)
+void Battle::playerWin(Character * winner, Character * loser, Game * game, bool ifPsychic)
 {
   cout << endl;
 
@@ -224,8 +231,10 @@ void Battle::playerWin(Character * winner, Character * loser, Game * game)
   switch (choice)
   {
   case 0: 
-    if (!saveLife(loser, game))
+    if (ifPsychic)
       loser->lifeLost();
+    else if (!saveLife(loser, game))
+        loser->lifeLost();
     game->getUI()->announce(loser->name() + " loses 1 life.");
     break;
   case 1:
@@ -299,4 +308,96 @@ bool Battle::saveLife(Character * c, Game * game)
     else
       return false;
   }
+}
+
+int Battle::cardPsychic(Character * character, EnemyCard * card, Game * game)
+{
+  int r1, r2;
+  r1 = game->roll();
+  r2 = game->roll();
+
+  game->getUI()->announce(card->title() + " initiates psychic combat!");
+
+  cout << character->name() << " versus " << card->title() << endl << endl;
+  cout << "The " << character->name() << " rolls a " << r1 << " for a total of " << character->craft() + r1 << " craft!\n";
+  cout << "The " << card->title() << " rolls a " << r2 << " for a total of " << card->craft() + r2 << " craft!\n\n";
+
+  if ((character->craft() + r1) <= (card->craft() + r2) && character->fate() > 0)
+    r1 = this->useFate(r1, character, game);
+  
+  cout << endl << character->craft() + r1 << " versus " << card->craft() + r2 << ": ";
+
+
+  /*
+    Step 5:
+    Compare
+  */
+  int result = this->result(character->craft() + r1, card->craft() + r2);
+  switch (result){
+  case 0:
+    game->getUI()->announce(character->name() + " wins!" );
+    //increase trophies
+    //remove enemy
+    system("pause");
+    return 1;
+    break;
+  case 1:
+    game->getUI()->announce("Draw!");
+    //enemy stays in place
+    system("pause");
+    return 0;
+    break;
+  case 2:
+    game->getUI()->announce(character->name() + " loses!");
+    character->lifeLost();
+    //enemy stays in place
+    system("pause");
+    return -1;
+    break;
+  }
+}
+
+int Battle::playerPsychic(Character * c1, Character * c2, Game * game)
+{
+  int r1, r2;
+  r1 = game->roll();
+  r2 = game->roll();
+
+  game->getUI()->announce(c1->name() + " initiates psychic combat!");
+  cout << c1->name() << " versus " << c2->name() << endl << endl;
+  cout << "The " << c1->name() << " rolls a " << r1 << " for a total of " << c1->craft() + r1 << " craft!\n";
+  cout << "The " << c2->name() << " rolls a " << r2 << " for a total of " << c2->craft() + r2 << " craft!\n\n"; 
+  
+  if ((c1->craft() + r1) <= (c2->craft() + r2) && c1->fate() > 0)
+    r1 = this->useFate(r1, c1, game);
+
+  if ((c2->craft() + r2) <= (c1->craft() + r1) && c2->fate() > 0)
+    r2 = this->useFate(r2, c2, game);
+
+  cout << endl << c1->craft() + r1 << " versus " << c2->craft() + r2 << ": ";
+
+
+  /*
+    Step 5:
+    Compare
+  */
+  int result = this->result(c1->craft() + r1, c2->craft() + r2);
+  switch (result){
+  case 0:
+    playerWin(c1, c2, game, true);
+    system("pause");
+    return 1;
+    break;
+  case 1:
+    game->getUI()->announce("Draw!");
+    return 0;
+    system("pause");
+    break;
+  case 2:
+    playerWin(c2, c1, game, true);
+    system("pause");
+    return -1;
+    break;
+  }
+
 }

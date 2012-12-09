@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "Character.h"
+#include "Game.h"
 
 #include <iostream>
 #include <fstream>
@@ -101,6 +102,48 @@ void Character::move(MapTile* new_position)
   this->_position = new_position;
   this->_position->addPlayer(this);
   this->recompute();
+}
+
+void Character::addTrophy(EnemyCard* card)
+{
+  _trophies.push_back(card);
+}
+
+void Character::cashInTrophies(Game* game)
+{
+  EnemyCard* trophy;
+  int str_total(0), crft_total(0);
+  vector<vector<EnemyCard*>::iterator> str_cards;
+  vector<vector<EnemyCard*>::iterator> crft_cards;
+  for (auto it = _trophies.begin(); it != _trophies.end(); it++) {
+    trophy = *it;
+    if (trophy->strength() > 0) {
+      str_total += trophy->strength();
+      str_cards.push_back(it);
+    }
+    else if (trophy->craft() > 0) {
+      crft_total += trophy->craft();
+      crft_cards.push_back(it);
+    }
+  }
+  if (str_total >= 1) {
+    int added_strength = str_total / 7;
+    base_strength += added_strength;
+    for (auto it = str_cards.begin(); it != str_cards.end(); it++) {
+      game->discardAdventureCard(**it);
+      _trophies.erase(*it);
+    }
+    game->getUI()->announce("You gained strength from your trophies!");
+  }
+  if (crft_total >= 1) {
+    int added_craft = crft_total / 7;
+    base_craft += added_craft;
+    for (auto it = crft_cards.begin(); it != crft_cards.end(); it++) {
+      game->discardAdventureCard(**it);
+      _trophies.erase(*it);
+    }
+    game->getUI()->announce("You gained craft from your trophies!");
+  }
 }
 
 void Character::pickup(ObjectCard* item)

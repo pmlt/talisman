@@ -121,8 +121,16 @@ bool EnemyCard::encounter(Character* character, Game* game)
 {
   game->getUI()->announce("You have encountered a " + this->title() + "!");
   Battle * battle = new Battle();
-  battle->cardFight(character, this, game);
-  return true; // XXX need to return TRUE ONLY if player won the fight
+  int results = battle->cardFight(character, this, game);
+  if (results == 1) {
+    //Player won! Card is added to trophies and removed from the tile.
+    character->addTrophy(this);
+    return true;
+  }
+  else {
+    //Stand-off or player has lost. Do not remove card from the tile.
+    return false;
+  }
 }
 
 string SwordCard::title() { return "Sword"; }
