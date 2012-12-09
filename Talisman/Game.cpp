@@ -59,33 +59,28 @@ void Game::destroy(Game* game)
 GameUI* Game::getUI() const { return this->ui; }
 void Game::setUI(GameUI &ui) { this->ui = &ui; }
 
-void Game::addPlayer(Character &c)
-{
-  // Assign position on board to player
-
-  for(vector<int>::size_type i = 0; i != players.size(); i++) {
-    if (this->players[i]->name() == c.name() )
-    {
-      //Throw PlayerExistsException
-      return;
-    }
-  }
-  // Assign position on board to player
-  this->players.push_back(&c);
-}
-
-void Game::removePlayer(Character &c)
+void Game::removePlayer(Character* c)
 {
   for(vector<int>::size_type i = 0; i != players.size(); i++) {
-    if (this->players[i]->name() == c.name() )
+    if (this->players[i] == c )
     {
       this->players.erase(this->players.begin() + i);
       //Remove from board
       return;
     }
   }
-  //Throw PlayerNotFoundException
-
+  Character* first_player = player_turns.front();
+  bool removed_character = false;
+  while (!removed_character && player_turns.front() != first_player) {
+    Character* p = player_turns.front();
+    player_turns.pop();
+    if (!removed_character && p == c) {
+      removed_character = true;
+      delete c;
+      break; //Don't add it back to the queue
+    }
+    player_turns.push(p);
+  }
 }
 
 Board* Game::getBoard() const { return this->board; }
@@ -129,7 +124,10 @@ bool Game::isFinished()
 {
   //Inspect victory conditions
   //Return true if a player has won
-  return 0;
+  //Victory conditions are:
+  //  1 - There is only one player surviving
+  //  2 - That player is on the Crown of Command (in the Valley of Fire).
+  return getNumberOfPlayers() == 1 && players[0]->position()->getTitle() == "Valley of Fire";
 }
 
 int Game::getNumberOfPlayers() const

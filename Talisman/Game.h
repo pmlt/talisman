@@ -47,16 +47,10 @@ public:
   void setUI(GameUI &ui);
 
   /*
-    Method: addPlayer
-    Add a player to the session. This should only be called before start().
-  */
-  void addPlayer(Character &c);
-
-  /*
     Method: removePlayer
     Removes a player from the session.
   */
-  void removePlayer(Character &c);
+  void removePlayer(Character* c);
 
   /*
     Method: getBoard
