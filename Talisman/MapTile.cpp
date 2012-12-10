@@ -514,7 +514,32 @@ void PortalOfPowerTile::step(Character *character, Game* game, unsigned int move
 
 string BlackKnightTile::getTitle() const { return "Black Knight"; }
 void BlackKnightTile::encounter(Character* character, Game* game) {
-  // XXX TODO
+  game->getUI()->announce("An overwhelming presence assails you as you arrive at the Black Knight...");
+
+  if (character->gold() == 0)
+  {
+    game->getUI()->announce("The invincible Black Knight demands blood as tribute. You lose 1 life.");
+    character->lifeLost();
+  }
+  else
+  {
+    string options[2] = {
+      "Offer 1 life",
+      "Offer 1 gold"
+    };
+    unsigned char choice = game->getUI()->prompt("The invincible Black Knight demands tribute, be it gold or blood. What will you offer?", options, 2);
+
+    if (choice == 0)
+    {
+      character->lifeLost();
+      game->getUI()->announce("The Black Knight accepts your offering. You lose 1 life.");
+    }
+    else
+    {
+      character->setGold(character->gold() - 1);
+      game->getUI()->announce("The Black Knight accepts your offering. You lose 1 gold.");
+    }
+  }
 }
 
 string HiddenValleyTile::getTitle() const { return "Hidden Valley"; }
