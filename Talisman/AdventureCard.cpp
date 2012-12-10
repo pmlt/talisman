@@ -249,6 +249,9 @@ unsigned int SpiritCard::craft() const { return 4; }
 SentinelCard::SentinelCard() : EnemyCard(1) {}
 string SentinelCard::title() { return "Sentinel"; }
 unsigned int SentinelCard::strength() const { return 9; }
+BrigandCard::BrigandCard() : EnemyCard(1) {}
+string BrigandCard::title() { return "Brigand"; }
+unsigned int BrigandCard::strength() const { return 4; }
 
 string CounterSpellCard::title() { return "CounterSpell"; }
 string DestroyMagicCard::title() { return "DestroyMagic"; }
