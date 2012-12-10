@@ -27,7 +27,7 @@ Game* Game::init(string map_file, string adventure_deck_file, string purchase_de
   }
   AdventureCard::createDeckFromFile(purchase_deck_file, v2, true);
   for (auto it = v2.begin(); it != v2.end(); it++) {
-    _inst->purchase_deck.push(*it);
+    _inst->purchase_deck.push_back((SpellCard*)(*it));
   }
 
   //Return Game object
@@ -94,9 +94,27 @@ void Game::discardAdventureCard(AdventureCard* card)
   this->adventure_deck.push(card);
 }
 
+void Game::selectPurchaseCard(Character* character)
+{
+  if (purchase_deck.size() <= 0) {
+    ui->announce("The purchase deck is empty! Sorry!");
+    return;
+  }
+  string* options = new string[purchase_deck.size()];
+  for (unsigned int i=0; i < purchase_deck.size(); i++) {
+    options[i] = purchase_deck[i]->title();
+  }
+  unsigned int choice = ui->prompt("Select a spell from the purchase deck: ", options, purchase_deck.size());
+  delete[] options;
+  SpellCard* card = purchase_deck[choice];
+  ui->announce(card->title() + " is now in your spell list!");
+  character->pickup(card);
+  purchase_deck.erase(purchase_deck.begin()+choice);
+}
+
 unsigned char Game::roll() const
 {
-  return (rand() % 6) + 1;
+  return 1;//return (rand() % 6) + 1;
 }
 
 bool Game::loseLife(Character* character, int life_lost)
