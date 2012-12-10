@@ -51,7 +51,7 @@ int Battle::cardFight(Character * character, EnemyCard * card, Game * game)
     r1 = this->warriorAbility(r1, character, game);
 
   if ((character->strength() + r1) <= (card->strength() + r2) && character->fate() > 0)
-    r1 = this->useFate(r1, character, game);
+    r1 = this->useFate(r1, character, game, false);
   
   cout << endl << character->strength() + r1 << " versus " << card->strength() + r2 << ": ";
 
@@ -145,10 +145,10 @@ int Battle::playerFight(Character * c1, Character * c2, Game * game)
     r2 = this->warriorAbility(r2, c2, game);
   
   if ((c1->strength() + r1) <= (c2->strength() + r2) && c1->fate() > 0)
-    r1 = this->useFate(r1, c1, game);
+    r1 = this->useFate(r1, c1, game, false);
 
   if ((c2->strength() + r2) <= (c1->strength() + r1) && c2->fate() > 0)
-    r2 = this->useFate(r2, c2, game);
+    r2 = this->useFate(r2, c2, game, false);
 
   cout << endl << c1->strength() + r1 << " versus " << c2->strength() + r2 << ": ";
 
@@ -243,7 +243,7 @@ void Battle::playerWin(Character * winner, Character * loser, Game * game, bool 
     return;
   }
 
-  unsigned char choice = game->getUI()->prompt("As the winner, " + winner->name() + " can choose one of the following options:", options, 3);
+  unsigned char choice = game->getUI()->prompt("As the winner, " + winner->name() + " can choose one of the following options:", options, numChoices);
 
   switch (choice)
   {
@@ -251,8 +251,10 @@ void Battle::playerWin(Character * winner, Character * loser, Game * game, bool 
     if (ifPsychic)
       loser->lifeLost();
     else if (!saveLife(loser, game))
-        loser->lifeLost();
-    game->getUI()->announce(loser->name() + " loses 1 life.");
+    {
+      loser->lifeLost();
+      game->getUI()->announce(loser->name() + " loses 1 life.");
+    }
     break;
   case 1:
     if (hasGold == true)
@@ -271,7 +273,7 @@ void Battle::playerWin(Character * winner, Character * loser, Game * game, bool 
 
 }
 
-int Battle::useFate(int r1, Character * character, Game * game)
+int Battle::useFate(int r1, Character * character, Game * game, bool ifPsychic)
 {
   string options[2] = 
   {
@@ -284,7 +286,10 @@ int Battle::useFate(int r1, Character * character, Game * game)
   {
     character->setFate(character->fate() - 1);
 	r1 = game->roll();
-	cout << endl << "Your new attack roll is " << r1 << ", giving you a total of " << character->strength() + r1 << " strength!\n\n";
+	if (!ifPsychic)
+      cout << endl << "Your new attack roll is " << r1 << ", giving you a total of " << character->strength() + r1 << " strength!\n\n";
+    else
+      cout << endl << "Your new attack roll is " << r1 << ", giving you a total of " << character->craft() + r1 << " craft!\n\n";
   }
   
   return r1;
@@ -329,6 +334,7 @@ bool Battle::saveLife(Character * c, Game * game)
     if (choice == 0)
     {
       c->drop(c->findObject("Shield"));
+      game->getUI()->announce("Your shield breaks from the impact, but you have avoided taking damage.");
       return true;
     }
     else
@@ -351,7 +357,7 @@ int Battle::cardPsychic(Character * character, EnemyCard * card, Game * game)
   cout << "The " << card->title() << " rolls a " << r2 << " for a total of " << card->craft() + r2 << " craft!\n\n";
 
   if ((character->craft() + r1) <= (card->craft() + r2) && character->fate() > 0)
-    r1 = this->useFate(r1, character, game);
+    r1 = this->useFate(r1, character, game, true);
   
   cout << endl << character->craft() + r1 << " versus " << card->craft() + r2 << ": ";
 
@@ -395,10 +401,10 @@ int Battle::playerPsychic(Character * c1, Character * c2, Game * game)
   cout << "The " << c2->name() << " rolls a " << r2 << " for a total of " << c2->craft() + r2 << " craft!\n\n"; 
   
   if ((c1->craft() + r1) <= (c2->craft() + r2) && c1->fate() > 0)
-    r1 = this->useFate(r1, c1, game);
+    r1 = this->useFate(r1, c1, game, true);
 
   if ((c2->craft() + r2) <= (c1->craft() + r1) && c2->fate() > 0)
-    r2 = this->useFate(r2, c2, game);
+    r2 = this->useFate(r2, c2, game, true);
 
   cout << endl << c1->craft() + r1 << " versus " << c2->craft() + r2 << ": ";
 
@@ -440,6 +446,7 @@ void Battle::takeObject(Character * winner, Character * loser, Game * game)
   for (auto it = loser->inventory().begin(); it != loser->inventory().end(); it++)
   {
     options[i] = (*it)->title();
+    ++i;
   }
   unsigned char choice = game->getUI()->prompt(winner->name() + ", which item would you like to take?", options, loser->inventory().size());
 
