@@ -126,7 +126,7 @@ void Character::cashInTrophies(Game* game)
       crft_cards.push_back(it);
     }
   }
-  if (str_total >= 1) {
+  if (str_total >= 7) {
     int added_strength = str_total / 7;
     base_strength += added_strength;
     for (auto it = str_cards.begin(); it != str_cards.end(); it++) {
@@ -135,7 +135,7 @@ void Character::cashInTrophies(Game* game)
     }
     game->getUI()->announce("You gained strength from your trophies!");
   }
-  if (crft_total >= 1) {
+  if (crft_total >= 7) {
     int added_craft = crft_total / 7;
     base_craft += added_craft;
     for (auto it = crft_cards.begin(); it != crft_cards.end(); it++) {

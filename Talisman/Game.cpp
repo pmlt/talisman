@@ -96,7 +96,7 @@ void Game::discardAdventureCard(AdventureCard* card)
 
 unsigned char Game::roll() const
 {
-  return (rand() % 6) + 1;;
+  return (rand() % 6) + 1;
 }
 
 bool Game::loseLife(Character* character, int life_lost)
