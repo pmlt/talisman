@@ -73,6 +73,12 @@ class Battle{
       Checks through all possible spells/items the player has to negate losing life
     */
     bool saveLife(Character * c, Game * game);
+
+    /*
+      Method: takeObject
+      Prompts the user to take an object from the losing player
+    */
+    void takeObject(Character * winner, Character * loser, Game * game);
     
 };
 

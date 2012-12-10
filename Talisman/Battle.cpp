@@ -64,14 +64,11 @@ int Battle::cardFight(Character * character, EnemyCard * card, Game * game)
   switch (result){
   case 0:
     game->getUI()->announce(character->name() + " wins!" );
-    //increase trophies
-    //remove enemy
     system("pause");
     return 1;
     break;
   case 1:
     game->getUI()->announce("Draw!");
-    //enemy stays in place
     system("pause");
     return 0;
     break;
@@ -80,14 +77,11 @@ int Battle::cardFight(Character * character, EnemyCard * card, Game * game)
     save = saveLife(character, game);
     if (!save)
       character->lifeLost();
-    //enemy stays in place
     system("pause");
     return -1;
     break;
   }
-
-  
-
+  return 0; //compiler
 }
 
 
@@ -97,7 +91,7 @@ int Battle::playerFight(Character * c1, Character * c2, Game * game)
   int r1, r2;
   r1 = game->roll();
   r2 = game->roll();
-  bool evasion;
+  bool evasion = false;
  
   /*
     Step 1 & 2:
@@ -183,6 +177,7 @@ int Battle::playerFight(Character * c1, Character * c2, Game * game)
   }
   system("pause");
 
+  return 0; //compiler
 }
 
 int Battle::warriorAbility(int r1, Character * character, Game * game)
@@ -219,13 +214,35 @@ int Battle::result(int r1, int r2)
 void Battle::playerWin(Character * winner, Character * loser, Game * game, bool ifPsychic)
 {
   cout << endl;
+  string options[3]= { loser->name() + " loses 1 life", "", "" };
+  int numChoices = 1;
+  bool hasGold = false;
+  bool hasObject = false;
 
-  string options[3] = 
+  if (loser->gold() > 0)
   {
-    loser->name() + " loses 1 life",
-    loser->name() + " loses 1 gold",
-    loser->name() + " loses 1 object"
-  };
+    options[numChoices] = loser->name() + " loses 1 gold";
+    numChoices++;
+    hasGold = true;
+  }
+
+  if (!loser->inventory().empty())
+  {
+    options[numChoices] = loser->name() + " loses 1 object";
+    numChoices++;
+    hasObject = true;
+  }
+
+  if (numChoices == 1)
+  {
+    if (ifPsychic)
+      loser->lifeLost();
+    else if (!saveLife(loser, game))
+        loser->lifeLost();
+    game->getUI()->announce(loser->name() + " loses 1 life.");
+    return;
+  }
+
   unsigned char choice = game->getUI()->prompt("As the winner, " + winner->name() + " can choose one of the following options:", options, 3);
 
   switch (choice)
@@ -238,14 +255,20 @@ void Battle::playerWin(Character * winner, Character * loser, Game * game, bool 
     game->getUI()->announce(loser->name() + " loses 1 life.");
     break;
   case 1:
-    loser->setGold(loser->gold() - 1);
-    game->getUI()->announce(loser->name() + " loses 1 gold.");
+    if (hasGold == true)
+    {
+      loser->setGold(loser->gold() - 1);
+      game->getUI()->announce(loser->name() + " loses 1 gold.");
+    }
+    else if (hasObject == true)
+      takeObject(winner, loser, game);
     break;
   case 2:
-    //take an object
+    takeObject(winner, loser, game);
     break;
-
   }
+
+
 }
 
 int Battle::useFate(int r1, Character * character, Game * game)
@@ -287,10 +310,13 @@ bool Battle::evade(Character * c, Game * game)
     else
       return false;
   }
+
+  return false; //compiler
 }
 
 bool Battle::saveLife(Character * c, Game * game)
 {
+  //check for shield
   if (c->findObject("Shield") != NULL)
   {
     string options[2] = 
@@ -308,6 +334,8 @@ bool Battle::saveLife(Character * c, Game * game)
     else
       return false;
   }
+
+  return false; //compiler
 }
 
 int Battle::cardPsychic(Character * character, EnemyCard * card, Game * game)
@@ -336,25 +364,23 @@ int Battle::cardPsychic(Character * character, EnemyCard * card, Game * game)
   switch (result){
   case 0:
     game->getUI()->announce(character->name() + " wins!" );
-    //increase trophies
-    //remove enemy
     system("pause");
     return 1;
     break;
   case 1:
     game->getUI()->announce("Draw!");
-    //enemy stays in place
     system("pause");
     return 0;
     break;
   case 2:
     game->getUI()->announce(character->name() + " loses!");
     character->lifeLost();
-    //enemy stays in place
     system("pause");
     return -1;
     break;
   }
+
+  return 0; //compiler
 }
 
 int Battle::playerPsychic(Character * c1, Character * c2, Game * game)
@@ -400,4 +426,27 @@ int Battle::playerPsychic(Character * c1, Character * c2, Game * game)
     break;
   }
 
+  return 0; //compiler
 }
+
+void Battle::takeObject(Character * winner, Character * loser, Game * game)
+{
+  string * options = new string[loser->inventory().size()];
+  int i = 0;
+
+  game->getUI()->announce(loser->name() + " has the following objects:");
+
+
+  for (auto it = loser->inventory().begin(); it != loser->inventory().end(); it++)
+  {
+    options[i] = (*it)->title();
+  }
+  unsigned char choice = game->getUI()->prompt(winner->name() + ", which item would you like to take?", options, loser->inventory().size());
+
+  game->getUI()->announce(winner->name() + " has taken " + loser->inventory()[choice]->title() + " from " + loser->name() + ".");
+  
+  winner->pickup(loser->inventory()[choice]);
+  loser->drop(loser->inventory()[choice]);
+
+}
+

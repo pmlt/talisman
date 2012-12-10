@@ -304,17 +304,22 @@ void SentinelTile::step(Character *character, Game* game, unsigned int movement,
         game->getUI()->announce("You emerge victorious and cross into the middle region...");
         MapTile* dest = game->getBoard()->find("Hills (Sentinel)");
         if (dest != NULL) {
-          dest->land(character, game);
+          character->move(dest);
+          game->notify();
           return; //Do NOT continue
         }
       }
       else if (results == 0) {
         game->getUI()->announce("After a great battle, no victor emerges. Too tired to go on, you remain on the Sentinel space.");
-        return this->land(character, game);
+        character->move(this);
+        game->notify();
+        return;
       }
       else {
         game->getUI()->announce("After a great battle, the Sentinel gets the better of you. You lose a life, and are too tired to move on.");
-        return this->land(character, game);
+        character->move(this);
+        game->notify();
+        return;
       }
     }
   }
@@ -325,6 +330,24 @@ void SentinelTile::step(Character *character, Game* game, unsigned int movement,
 string HillsTile::getTitle() const { return "Hills"; }
 
 string SentinelHillsTile::getTitle() const { return "Hills (Sentinel)"; }
+
+void SentinelHillsTile::step(Character *character, Game* game, unsigned int movement, unsigned int direction) {
+  //Ask user to move to inner region
+  string options[2] = {
+    "Yes, cross into the outer region.",
+    "No, continue my way in the middle region."
+  };
+  unsigned char choice = game->getUI()->prompt("You are passing the Hills near the Sentinel space and you still have movement left. Do you want to cross over into the outer region?", options, 2);
+  if (choice == 0) {
+    MapTile* dest = game->getBoard()->find("Sentinel");
+    if (dest != NULL) {
+      dest->land(character, game);
+      return; //Do NOT continue
+    }
+  }
+  //Continue normally
+  MapTile::step(character, game, movement, direction);
+}
 
 string ChapelTile::getTitle() const { return "Chapel"; }
 void ChapelTile::encounter(Character* character, Game* game) {
@@ -428,7 +451,7 @@ void PortalOfPowerTile::step(Character *character, Game* game, unsigned int move
       game->getUI()->announce("You successfully open the Portal of Power...");
       MapTile* dest = game->getBoard()->find("Plains of Peril");
       if (dest != NULL) {
-        return dest->land(character, game); //Do NOT continue
+        return character->move(dest); //Do NOT continue
       }
     }
     else {
@@ -498,7 +521,18 @@ void CastleTile::encounter(Character* character, Game* game) {
 
 string PlainsOfPerilTile::getTitle() const { return "Plains of Peril"; }
 void PlainsOfPerilTile::encounter(Character* character, Game* game) {
-  // XXX TODO
+  //Ask user to move to inner region
+  string options[2] = {
+    "Yes, cross into the middle region.",
+    "No, continue my way in the inner region."
+  };
+  unsigned char choice = game->getUI()->prompt("You have landed in the Plains of Peril. Do you want to cross over into the middle region?", options, 2);
+  if (choice == 0) {
+    MapTile* dest = game->getBoard()->find("Portal of Power");
+    if (dest != NULL) {
+      character->move(dest);
+    }
+  }
 }
 
 string MinesTile::getTitle() const { return "Mines"; }
