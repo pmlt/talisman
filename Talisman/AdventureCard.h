@@ -61,6 +61,7 @@ class FollowerCard : public AdventureCard
 {
 public:
   FollowerCard(unsigned char number);
+  virtual bool encounter(Character* character, Game* game);
 };
 
 class EventCard : public AdventureCard
@@ -138,6 +139,7 @@ class WitchCard : public StrangerCard
 public:
   WitchCard();
   virtual string title();
+  virtual bool encounter(Character* character, Game* game);
 };
 
 class HealerCard : public StrangerCard
@@ -145,6 +147,7 @@ class HealerCard : public StrangerCard
 public:
   HealerCard();
   virtual string title();
+  virtual bool encounter(Character* character, Game* game);
 };
 
 class PrincessCard : public FollowerCard

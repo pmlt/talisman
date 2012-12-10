@@ -228,6 +228,18 @@ public:
   void cashInTrophies(Game* game);
 
   /*
+    Method: addFollower
+    Add a follower to your troupe.
+  */
+  void addFollower(FollowerCard* follower);
+
+  /*
+    Method: findFollower
+    Lookup follower by name
+  */
+  FollowerCard* findFollower(string name);
+
+  /*
     Method: pickup
     Pick up an item and add it to the character's inventory.
 
