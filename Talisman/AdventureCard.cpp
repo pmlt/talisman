@@ -9,7 +9,7 @@
 
 using namespace std;
 
-AdventureCard::AdventureCard(void) : _number(0), _isPurchaseCard(false)
+AdventureCard::AdventureCard(unsigned char number) : _number(number), _isPurchaseCard(false)
 {
 }
 
@@ -85,9 +85,11 @@ bool AdventureCard::encounter(Character* character, Game* game)
   return true;
 }
 
+EnemyCard::EnemyCard(unsigned char number) : AdventureCard(number) {}
 string EnemyCard::type() { return this->_type; }
 void EnemyCard::type(string type) { this->_type = type; }
 
+ObjectCard::ObjectCard(unsigned char number) : AdventureCard(number) {}
 string ObjectCard::type() { return this->_type; }
 void ObjectCard::type(string type) { this->_type = type; }
 bool ObjectCard::encounter(Character* character, Game* game)
@@ -133,8 +135,16 @@ bool EnemyCard::encounter(Character* character, Game* game)
   }
 }
 
+StrangerCard::StrangerCard(unsigned char number) : AdventureCard(number) {}
+FollowerCard::FollowerCard(unsigned char number) : AdventureCard(number) {}
+PlaceCard::PlaceCard(unsigned char number) : AdventureCard(number) {}
+EventCard::EventCard(unsigned char number) : AdventureCard(number) {}
+SpellCard::SpellCard() : AdventureCard(0) {}
+
+SwordCard::SwordCard() : ObjectCard(5) {}
 string SwordCard::title() { return "Sword"; }
 
+BagOfGoldCard::BagOfGoldCard() : ObjectCard(5) {}
 string BagOfGoldCard::title() { return "Bag of Gold"; }
 bool BagOfGoldCard::encounter(Character* character, Game* game)
 {
@@ -144,30 +154,53 @@ bool BagOfGoldCard::encounter(Character* character, Game* game)
   return true;
 }
 
+TalismanCard::TalismanCard() : ObjectCard(5) {}
 string TalismanCard::title() { return "Talisman"; }
+WaterBottleCard::WaterBottleCard() : ObjectCard(5) {}
 string WaterBottleCard::title() { return "Water Bottle"; }
+ShieldCard::ShieldCard() : ObjectCard(5) {}
 string ShieldCard::title() { return "Shield"; }
+AxeCard::AxeCard() : ObjectCard(5) {}
 string AxeCard::title() { return "Axe"; }
+RaftCard::RaftCard() : ObjectCard(5) {}
 string RaftCard::title() { return "Raft"; }
 
+WitchCard::WitchCard() : StrangerCard(4) {}
 string WitchCard::title() { return "Witch"; }
+HealerCard::HealerCard() : StrangerCard(4) {}
 string HealerCard::title() { return "Healer"; }
+
+PrincessCard::PrincessCard() : FollowerCard(5) {}
 string PrincessCard::title() { return "Princess"; }
+GuideCard::GuideCard() : FollowerCard(5) {}
 string GuideCard::title() { return "Guide"; }
+
+MarshCard::MarshCard() : PlaceCard(6) {}
 string MarshCard::title() { return "Marsh"; }
+ShrineCard::ShrineCard() : PlaceCard(6) {}
 string ShrineCard::title() { return "Shrine"; }
+
+BlizzardCard::BlizzardCard() : EventCard(1) {}
 string BlizzardCard::title() { return "Blizzard"; }
+MarketDayCard::MarketDayCard() : EventCard(1) {}
 string MarketDayCard::title() { return "Market Day"; }
+
+WolfCard::WolfCard() : EnemyCard(2) {}
 string WolfCard::title() { return "Wolf"; }
 unsigned int WolfCard::strength() const { return 2; }
+WildBoarCard::WildBoarCard() : EnemyCard(2) {}
 string WildBoarCard::title() { return "Wild Boar"; }
 unsigned int WildBoarCard::strength() const { return 1; }
+BearCard::BearCard() : EnemyCard(2) {}
 string BearCard::title() { return "Bear"; }
 unsigned int BearCard::strength() const { return 3; }
+SpiritCard::SpiritCard() : EnemyCard(1) {}
 string SpiritCard::title() { return "Spirit"; }
 unsigned int SpiritCard::craft() const { return 4; }
+SentinelCard::SentinelCard() : EnemyCard(1) {}
 string SentinelCard::title() { return "Sentinel"; }
 unsigned int SentinelCard::strength() const { return 9; }
+
 string CounterSpellCard::title() { return "CounterSpell"; }
 string DestroyMagicCard::title() { return "DestroyMagic"; }
 string HealingCard::title() { return "Healing"; }
