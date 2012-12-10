@@ -187,10 +187,12 @@ void VillageTile::encounter(Character *character, Game* game) {
     }
   }
   else if (visit == 2) {
-    unsigned int life_to_recover = min(character->gold(), character->lifeLost());
-    character->setLife(character->life() + life_to_recover);
-    character->setGold(character->gold()-life_to_recover);
-    ui->announce("The Healer has healed you!");
+    if (character->lifeLost() > 0) {
+      unsigned int life_to_recover = min(character->gold(), (unsigned int)character->lifeLost());
+      character->setLife(character->life() + life_to_recover);
+      character->setGold(character->gold()-life_to_recover);
+      ui->announce("The Healer has healed you!");
+    }
   }
   else {
     unsigned int roll = game->roll();
@@ -357,9 +359,11 @@ void ChapelTile::encounter(Character* character, Game* game) {
   }
   else if (character->alignment() == 0) {
     game->getUI()->announce("You land on the Chapel; you spend gold to replenish life.");
-    int life_to_replenish = min(character->lifeLost(), character->gold());
-    character->setLife(character->life() + life_to_replenish);
-    character->setGold(character->gold() - life_to_replenish);
+    if (character->lifeLost() > 0) {
+      int life_to_replenish = min((unsigned int)character->lifeLost(), character->gold());
+      character->setLife(character->life() + life_to_replenish);
+      character->setGold(character->gold() - life_to_replenish);
+    }
   }
   else {
     string options[2] = {
@@ -584,7 +588,7 @@ void ValleyOfFireTile::encounter(Character* character, Game* game) {
 void ValleyOfFireTile::fightOtherPlayers(Character* character, Game* game) {
   remove(playersVyingForControl.begin(), playersVyingForControl.end(), character);
   string* options = new string[playersVyingForControl.size()];
-  for (int i=0; i < playersVyingForControl.size(); i++) {
+  for (unsigned int i=0; i < playersVyingForControl.size(); i++) {
     options[i] = "The " + playersVyingForControl[i]->name();
   }
   unsigned int choice = game->getUI()->prompt("You must fight! Which player do you want to fight?", options, playersVyingForControl.size());

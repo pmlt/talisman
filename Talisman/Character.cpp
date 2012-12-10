@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 
-Character::Character(int life, int strength, int craft, int fate, float alignment) : 
+Character::Character(unsigned int life, unsigned int strength, unsigned int craft, unsigned int fate, float alignment) : 
     life_counters(life), 
     starting_life(life),
     
@@ -16,6 +16,8 @@ Character::Character(int life, int strength, int craft, int fate, float alignmen
     craft_counters(0),
 
     fate_counters(fate), 
+    starting_fate(fate), 
+
     gold_counters(1), 
     _alignment(alignment),
     is_toad(false), 
@@ -55,12 +57,13 @@ void Character::createFromFile(string character_file, std::vector<Character*> &v
   file.close();
 }
 
-int Character::life() const { return this->life_counters; }
+unsigned int Character::life() const { return this->life_counters; }
 int Character::lifeLost() const { return this->starting_life - this->life_counters; }
-int Character::strength() const { return this->effective_strength; }
-int Character::craft() const { return this->effective_craft; }
-int Character::fate() const { return this->fate_counters; }
-int Character::gold() const { return this->gold_counters; }
+unsigned int Character::strength() const { return this->effective_strength; }
+unsigned int Character::craft() const { return this->effective_craft; }
+unsigned int Character::fate() const { return this->fate_counters; }
+int Character::fateLost() const { return this->starting_fate - this->fate_counters; }
+unsigned int Character::gold() const { return this->gold_counters; }
 float Character::alignment() const { return this->_alignment; }
 unsigned int Character::capacity() const { return this->effective_capacity; }
 unsigned int Character::remainingCapacity() const { return effective_capacity - _inventory.size(); }
@@ -208,29 +211,33 @@ void Character::recompute()
 }
 
 void Character::incrementStrength() {
-  base_strength++;
+  strength_counters++;
   recompute();
 }
 void Character::incrementCraft() {
-  base_craft++;
+  craft_counters++;
   recompute();
 }
 
 void Character::decrementStrength() {
-  base_strength--;
-  recompute();
+  if (strength_counters > 0) {
+    strength_counters--;
+    recompute();
+  }
 }
 void Character::decrementCraft() {
-  base_craft--;
-  recompute();
+  if (craft_counters > 0) {
+    craft_counters--;
+    recompute();
+  }
 }
 
-void Character::setFate(int newFate)
+void Character::setFate(unsigned int newFate)
 {
   fate_counters = newFate;
 }
 
-void Character::setGold(int newGold)
+void Character::setGold(unsigned int newGold)
 {
   gold_counters = newGold;
 }
@@ -239,7 +246,7 @@ void Character::setAlignment(float alignment) {
   _alignment = alignment;
 }
 
-void Character::setLife(int newLife)
+void Character::setLife(unsigned int newLife)
 {
   life_counters = newLife;
 }

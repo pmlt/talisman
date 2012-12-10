@@ -30,7 +30,7 @@ public:
       fate     - Starting amount of fate (as shown on the character card)
       align    - Starting alignment (as shown on the character card)
   */
-	Character(int life, int strength, int craft, int fate, float align);
+	Character(unsigned int life, unsigned int strength, unsigned int craft, unsigned int fate, float align);
 	virtual ~Character(void);
 
   /*
@@ -49,7 +49,7 @@ public:
     Method: life
     Returns the current life amount of the character
   */
-  int life() const;
+  unsigned int life() const;
 
   /*
     Method: lifeLost
@@ -61,7 +61,7 @@ public:
     Method: setLife
     Sets the current life amount of the character
   */
-  void setLife(int);
+  void setLife(unsigned int);
 
   /*
     Method: strength
@@ -69,7 +69,7 @@ public:
     means taking into account the base strength, strength tokens, equipment, 
     and current position on the map.
   */
-  int strength() const;
+  unsigned int strength() const;
 
   /*
     Method: craft
@@ -77,24 +77,30 @@ public:
     means taking into account the base craft, craft tokens, equipment, 
     and current position on the map.
   */
-  int craft() const;
+  unsigned int craft() const;
 
   /*
     Method: fate
     Returns the current number of fate tokens of the character.
   */
-  int fate() const;
+  unsigned int fate() const;
+
+  /*
+    Method: fateLost
+    Returns the difference between starting fate and current fate.
+  */
+  int fateLost() const;
 
   /*
     Method: setFate
     Sets the current number of fate tokens of the character.
   */
-  void setFate(int);
+  void setFate(unsigned int);
   /*
     Method: gold
     Returns the current number of gold tokens of the character.
   */
-  int gold() const;
+  unsigned int gold() const;
   /*
     Method: alignment
     Returns the alignment of the character (-1 = most evil to 1 = most good)
@@ -129,7 +135,7 @@ public:
     Method: setGold
     Sets the current number of gold tokens of the character.
   */
-  void setGold(int);
+  void setGold(unsigned int);
 
   /*
     Method: setAlignment
@@ -264,19 +270,20 @@ protected:
   void recompute();
 
 private:
-  int life_counters;
-  int starting_life;
+  unsigned int life_counters;
+  unsigned int starting_life;
 
-  int base_strength;
-  int strength_counters;
-  int effective_strength;
+  unsigned int base_strength;
+  unsigned int strength_counters;
+  unsigned int effective_strength;
 
-  int base_craft;
-  int craft_counters;
-  int effective_craft;
+  unsigned int base_craft;
+  unsigned int craft_counters;
+  unsigned int effective_craft;
 
-  int fate_counters;
-  int gold_counters;
+  unsigned int fate_counters;
+  unsigned int starting_fate;
+  unsigned int gold_counters;
   float _alignment;
 
   unsigned int base_capacity;
