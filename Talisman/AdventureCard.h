@@ -169,6 +169,7 @@ class MarshCard : public PlaceCard
 public:
   MarshCard();
   virtual string title();
+  virtual bool encounter(Character* character, Game* game);
 };
 
 class ShrineCard : public PlaceCard
@@ -176,6 +177,7 @@ class ShrineCard : public PlaceCard
 public:
   ShrineCard();
   virtual string title();
+  virtual bool encounter(Character* character, Game* game);
 };
 
 class BlizzardCard : public EventCard
@@ -183,6 +185,7 @@ class BlizzardCard : public EventCard
 public:
   BlizzardCard();
   virtual string title();
+  virtual bool encounter(Character* character, Game* game);
 };
 
 class MarketDayCard : public EventCard
@@ -190,6 +193,7 @@ class MarketDayCard : public EventCard
 public:
   MarketDayCard();
   virtual string title();
+  virtual bool encounter(Character* character, Game* game);
 };
 
 class WolfCard : public EnemyCard

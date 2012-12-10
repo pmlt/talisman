@@ -226,13 +226,93 @@ string GuideCard::title() { return "Guide"; }
 
 MarshCard::MarshCard() : PlaceCard(6) {}
 string MarshCard::title() { return "Marsh"; }
+bool MarshCard::encounter(Character* character, Game* game)
+{
+  if (character->strength() >= 5) {
+    game->getUI()->announce("You find a marsh here. Your extraordinary strength helps you wade through the mud.");
+  }
+  else {
+    game->getUI()->announce("You find a marsh here; you will spend the next turn wading through the mud!");
+  }
+  return false;
+}
 ShrineCard::ShrineCard() : PlaceCard(6) {}
 string ShrineCard::title() { return "Shrine"; }
+bool ShrineCard::encounter(Character* character, Game* game)
+{
+  game->getUI()->announce("You find a shrine here. You pray for a little bit.");
+  unsigned int roll = game->roll();
+  if (roll == 2) {
+    character->setFate(character->fate()+1);
+    game->getUI()->announce("You gain 1 fate!");
+  }
+  else if (roll == 3) {
+    character->setGold(character->gold()+1);
+    game->getUI()->announce("You gain 1 gold!");
+  }
+  else if (roll == 4) {
+    game->getUI()->announce("You gain the Destroy Magic spell!");
+    character->pickup(new DestroyMagicCard());
+  }
+  else if (roll == 5) {
+    game->getUI()->announce("You gain 1 life!");
+    character->setLife(character->life() + 1);
+  }
+  return false;
+}
 
 BlizzardCard::BlizzardCard() : EventCard(1) {}
 string BlizzardCard::title() { return "Blizzard"; }
+bool BlizzardCard::encounter(Character* character, Game* game)
+{
+  // XXX implement blizzard!
+  game->getUI()->announce("A terrible blizzard sets in... but nothing happens :-)");
+  return false;
+}
 MarketDayCard::MarketDayCard() : EventCard(1) {}
 string MarketDayCard::title() { return "Market Day"; }
+bool MarketDayCard::encounter(Character* character, Game* game)
+{
+  if (character->remainingCapacity() <= 0) {
+    game->getUI()->announce("You find a market, but you are already fully loaded so you keep on going.");
+    return false;
+  }
+  string options[6] = {
+    "Sword: 1G",
+    "Axe: 1G",
+    "Water Bottle: 1G",
+    "Shield: 2G",
+    "Raft: 3G"
+  };
+  unsigned int choice = game->getUI()->prompt("You find a market here. The items on sale are:", options, 5);
+  unsigned int cost = 1;
+  ObjectCard* card = NULL;
+  if (choice == 0) {
+    card = new SwordCard();
+  }
+  else if (choice == 1) {
+    card = new AxeCard();
+  }
+  else if (choice == 2) {
+    card = new WaterBottleCard();
+  }
+  else if (choice == 3) {
+    cost = 2;
+    card = new ShieldCard();
+  }
+  else if (choice == 4) {
+    cost = 3;
+    card = new RaftCard();
+  }
+  if (character->gold() < cost) {
+    game->getUI()->announce("You don't have enough gold for that!  Sorry!");
+  }
+  else {
+    game->getUI()->announce(card->title() + " purchased.");
+    character->pickup(card);
+  }
+  return false;
+}
 
 WolfCard::WolfCard() : EnemyCard(2) {}
 string WolfCard::title() { return "Wolf"; }
