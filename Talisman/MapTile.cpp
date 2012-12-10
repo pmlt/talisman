@@ -442,7 +442,34 @@ unsigned int RuinsTile::numCards() const { return 2; }
 
 string ForestTile::getTitle() const { return "Forest"; }
 void ForestTile::encounter(Character* character, Game* game) {
-  // XXX TODO
+  game->getUI()->announce("You arrive at the Forest...");
+  FollowerCard* guide = character->findFollower("Guide");
+  if (guide != NULL) {
+    string options[2] = {
+      "Sure, why not?",
+      "Mind your own business, follower!"
+    };
+    unsigned int choice = game->getUI()->prompt("Your guide wishes to give you advice. Listen to him?", options, 2);
+    if (choice == 0) {
+      game->getUI()->announce("The Guide leads you safely through the Forest.");
+    }
+  }
+  unsigned int roll = game->roll();
+  if (roll == 1) {
+    game->getUI()->announce("You are attacked by a Brigand!");
+    BrigandCard brigand;
+    brigand.encounter(character, game);
+  }
+  else if (roll == 2 || roll == 3) {
+    game->getUI()->announce("You are lost...");
+  }
+  else if (roll == 4 || roll == 5) {
+    game->getUI()->announce("You are safe, no effect.");
+  }
+  else {
+    game->getUI()->announce("A Ranger leads you out; you gain one craft!");
+    character->incrementCraft();
+  }
 }
 
 string PortalOfPowerTile::getTitle() const { return "Portal of Power"; }
