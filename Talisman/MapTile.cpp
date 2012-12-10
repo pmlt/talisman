@@ -47,7 +47,7 @@ void MapTile::start(Character *character, Game* game)
 {
   //Redraw
   game->notify();
-
+  
   //Roll how much for movement
   unsigned char movement = this->rollMovement(character, game);
   stringstream smov;
@@ -95,6 +95,7 @@ void MapTile::land(Character* character, Game* game)
     }
     options[players.size()] = this->getTitle();
     unsigned int choice = game->getUI()->prompt("There are other players here! What do you want to encounter?", options, players.size()+1);
+    delete[] options;
 
     if (choice == players.size()) {
       character->move(this);
@@ -196,16 +197,6 @@ void VillageTile::encounter(Character *character, Game* game) {
   }
   else {
     unsigned int roll = game->roll();
-    SpellCard *spell;
-    string spells[6] = {
-      "CounterSpell",
-      "Destroy Magic",
-      "Healing",
-      "Invisibility",
-      "Immobility",
-      "Preservation"
-    };
-    unsigned int spellchoice;
     switch (roll) {
     case 1: 
       character->setAlignment(-1);
@@ -220,22 +211,8 @@ void VillageTile::encounter(Character *character, Game* game) {
       ui->announce("The Mystic gave you 1 Craft!");
       break;
     case 6:
-      spellchoice = ui->prompt("The Mystic gives you a spell! Choose from the following:", spells, 6);
-      if (spellchoice == 0) {
-        spell = new CounterSpellCard();
-      } else if (spellchoice == 1) {
-        spell = new DestroyMagicCard();
-      } else if (spellchoice == 2) {
-        spell = new HealingCard();
-      } else if (spellchoice == 3) {
-        spell = new InvisibilityCard();
-      } else if (spellchoice == 4) {
-        spell = new ImmobilityCard();
-      } else if (spellchoice == 5) {
-        spell = new PreservationCard();
-      }
-      character->pickup(spell);
-      ui->announce("You now have that spell in your spellbook!");
+      ui->announce("The Mystic gives you a spell!");
+      game->selectPurchaseCard(character);
       break;
     default:
       ui->announce("Nothing happens.");
@@ -269,9 +246,8 @@ void GraveyardTile::encounter(Character* character, Game* game) {
         character->setFate(character->fate()+1);
       }
       else if (roll == 6) {
-        game->getUI()->announce("You pray and gain the Invisibility spell!");
-        SpellCard* card = new InvisibilityCard();
-        character->pickup(card);
+        game->getUI()->announce("You pray and gain a spell!");
+        game->selectPurchaseCard(character);
       }
       else {
         game->getUI()->announce("You pray, but the spirits do not listen...");
@@ -378,9 +354,8 @@ void ChapelTile::encounter(Character* character, Game* game) {
         character->setLife(character->life()+1);
       }
       else if (roll == 6) {
-        game->getUI()->announce("You pray and gain the Invisibility spell!");
-        SpellCard* card = new InvisibilityCard();
-        character->pickup(card);
+        game->getUI()->announce("You pray and gain a spell!");
+        game->selectPurchaseCard(character);
       }
       else {
         game->getUI()->announce("You pray, but the spirits do not listen...");

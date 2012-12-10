@@ -89,6 +89,12 @@ public:
   void discardAdventureCard(AdventureCard* card);
 
   /*
+    Method: selectPurchaseCard
+    Let the user pick a card from the Purchase deck and add it to his spell list.
+  */
+  void selectPurchaseCard(Character* character);
+
+  /*
     Method: roll
     Roll the dice!
   */
@@ -125,5 +131,5 @@ private:
   queue<Character*> player_turns;
   Board* board;
   queue<AdventureCard*> adventure_deck;
-  queue<AdventureCard*> purchase_deck;
+  vector<SpellCard*> purchase_deck;
 };
