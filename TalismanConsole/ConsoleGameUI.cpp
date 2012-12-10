@@ -16,6 +16,8 @@ ConsoleGameUI::~ConsoleGameUI(void)
 
 void ConsoleGameUI::announce(string msg)
 {
+  cin.clear();
+  //cin.ignore(20, '\n');
   cout << msg << endl << endl;
   getchar();
 }
