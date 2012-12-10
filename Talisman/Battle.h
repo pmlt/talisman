@@ -51,7 +51,7 @@ class Battle{
       Method: useFate
       Asks the player if they'd like to use a fate token
     */
-    int useFate(int r1, Character * character, Game * game);
+    int useFate(int r1, Character * character, Game * game, bool ifPsychic);
 
     /*
       Method: result
