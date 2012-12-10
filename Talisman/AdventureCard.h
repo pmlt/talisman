@@ -228,6 +228,14 @@ public:
   virtual unsigned int strength() const;
 };
 
+class BrigandCard : public EnemyCard
+{
+public:
+  BrigandCard();
+  virtual string title();
+  virtual unsigned int strength() const;
+};
+
 class SpiritCard : public EnemyCard
 {
 public:
