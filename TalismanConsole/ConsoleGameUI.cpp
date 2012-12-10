@@ -95,8 +95,9 @@ void ConsoleGameUI::notify()
       cout << "|" << setw(20);
       if (this->game->getBoard()->getTile(i, j) != NULL && this->game->getBoard()->getTile(i, j)->getPlayerCount() > 0)
       {
-        // XXX You must print ALL player names instead of just the first one.
         str = this->game->getBoard()->getTile(i, j)->getPlayer(0)->name();
+        if (this->game->getBoard()->getTile(i, j)->getPlayerCount() > 1)
+          str = str + " / " + this->game->getBoard()->getTile(i, j)->getPlayer(1)->name();
         cout << str + string((20 - str.length()) / 2, ' ');
       }
       else
@@ -107,7 +108,16 @@ void ConsoleGameUI::notify()
     //Fourth
     for (int j = 0; j < 7; ++j)
     {
-      cout << "|" << setw(21);
+      cout << "|" << setw(20);
+      if (this->game->getBoard()->getTile(i, j) != NULL && this->game->getBoard()->getTile(i, j)->getPlayerCount() > 2)
+      {
+        str = this->game->getBoard()->getTile(i, j)->getPlayer(2)->name();
+        if (this->game->getBoard()->getTile(i, j)->getPlayerCount() > 3)
+          str = str + " / " + this->game->getBoard()->getTile(i, j)->getPlayer(3)->name();
+        cout << str + string((20 - str.length()) / 2, ' ');
+      }
+      else
+        cout << " ";
     }
     cout << "|" << endl;
 
