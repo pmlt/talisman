@@ -107,6 +107,20 @@ void Character::move(MapTile* new_position)
   this->recompute();
 }
 
+FollowerCard* Character::findFollower(string name) {
+  for (auto it=followers.begin(); it != followers.end(); it++) {
+    if ((*it)->title() == name) {
+      return *it;
+    }
+  }
+  return NULL;
+}
+
+void Character::addFollower(FollowerCard* card)
+{
+  followers.push_back(card);
+}
+
 void Character::addTrophy(EnemyCard* card)
 {
   _trophies.push_back(card);

@@ -137,6 +137,11 @@ bool EnemyCard::encounter(Character* character, Game* game)
 
 StrangerCard::StrangerCard(unsigned char number) : AdventureCard(number) {}
 FollowerCard::FollowerCard(unsigned char number) : AdventureCard(number) {}
+bool FollowerCard::encounter(Character* character, Game* game) {
+  game->getUI()->announce("You find the " + this->title() + " wandering around. They have decided to follow you.");
+  character->addFollower(this);
+  return true; //Yes, remove card from tile
+}
 PlaceCard::PlaceCard(unsigned char number) : AdventureCard(number) {}
 EventCard::EventCard(unsigned char number) : AdventureCard(number) {}
 SpellCard::SpellCard() : AdventureCard(0) {}
@@ -167,8 +172,52 @@ string RaftCard::title() { return "Raft"; }
 
 WitchCard::WitchCard() : StrangerCard(4) {}
 string WitchCard::title() { return "Witch"; }
+bool WitchCard::encounter(Character* character, Game* game)
+{
+  game->getUI()->announce("You find a witch lurking here.");
+  unsigned int roll = game->roll();
+  if (roll == 1) {
+    game->getUI()->announce("She turns you into a toad!");
+    character->transformIntoToad();
+  }
+  else if (roll == 2) {
+    game->getUI()->announce("She beats you with her cane!  You lose a life.");
+    game->loseLife(character, 1);
+  }
+  else if (roll == 3) {
+    game->getUI()->announce("She casts a spell and gives you strength!");
+    character->incrementStrength();
+  }
+  else if (roll == 4) {
+    game->getUI()->announce("She casts a spell and gives you craft!");
+    character->incrementCraft();
+  }
+  else if (roll == 5) {
+    game->getUI()->announce("She is feeling generous; you gain the CounterSpell spell!");
+    character->pickup(new CounterSpellCard());
+  }
+  else if (roll == 6) {
+    game->getUI()->announce("She predicts your fate; your fate is replenished!");
+    if (character->fateLost() > 0) {
+      character->setFate(character->fate() + character->fateLost());
+    }
+  }
+  return false; //She is ALWAYS there!
+}
 HealerCard::HealerCard() : StrangerCard(4) {}
 string HealerCard::title() { return "Healer"; }
+bool HealerCard::encounter(Character* character, Game* game) {
+  game->getUI()->announce("A Healer has made his home here.");
+  if (character->lifeLost() > 0) {
+    int lifegained = min(character->lifeLost(), 2);
+    character->setLife(character->life() + lifegained);
+    game->getUI()->announce("He heals some of your wounds for free.");
+  }
+  else {
+    game->getUI()->announce("You do not require his help.");
+  }
+  return false; //He is ALWAYS here!
+}
 
 PrincessCard::PrincessCard() : FollowerCard(5) {}
 string PrincessCard::title() { return "Princess"; }

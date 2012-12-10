@@ -396,6 +396,17 @@ void ChapelTile::encounter(Character* character, Game* game) {
 string CragsTile::getTitle() const { return "Crags"; }
 void CragsTile::encounter(Character* character, Game* game) {
   game->getUI()->announce("You arrive at the Crags...");
+  FollowerCard* guide = character->findFollower("Guide");
+  if (guide != NULL) {
+    string options[2] = {
+      "Sure, why not?",
+      "Mind your own business, follower!"
+    };
+    unsigned int choice = game->getUI()->prompt("Your guide wishes to give you advice. Listen to him?", options, 2);
+    if (choice == 0) {
+      game->getUI()->announce("The Guide leads you safely through the Crags.");
+    }
+  }
   unsigned int roll = game->roll();
   if (roll == 1) {
     game->getUI()->announce("You are attacked by an evil Spirit!");
@@ -488,7 +499,20 @@ string RunesTile::getTitle() const { return "Runes"; }
 
 string ChasmTile::getTitle() const { return "Chasm"; }
 void ChasmTile::encounter(Character* character, Game* game) {
-  // XXX TODO
+  FollowerCard* guide = character->findFollower("Guide");
+  if (guide != NULL) {
+    game->getUI()->announce("Your Guide helps you navigate the Chasm carefully. Nothing happens.");
+  }
+  else {
+    unsigned int roll = game->roll();
+    if (roll == 1 || roll == 2) {
+      game->getUI()->announce("While navigating the Chasm, you misstep and break your ankle. Lose a life!");
+      game->loseLife(character, 1);
+    }
+    else {
+      game->getUI()->announce("You navigate the Chasm with difficulty but nothing bad happens.");
+    }
+  }
 }
 
 string WarlocksCaveTile::getTitle() const { return "Warlock's Cave"; }
@@ -520,7 +544,31 @@ void TempleTile::encounter(Character* character, Game* game) {
 
 string CastleTile::getTitle() const { return "Castle"; }
 void CastleTile::encounter(Character* character, Game* game) {
-  // XXX TODO
+  FollowerCard* princess = character->findFollower("Princess");
+  if (princess != NULL) {
+    string options[2] = {
+      "I merely need some healing, your majesty.",
+      "I would like a monetary compensation for my trouble, Sire."
+    };
+    unsigned int choice = game->getUI()->prompt("You have arrived at the Castle. The King thanks you for bringing back his daughter, the Princess! What would be your reward?", options, 2);
+    if (choice == 0) {
+      if (character->lifeLost() > 0) {
+        int lifegained = min(character->lifeLost(), 2);
+        character->setLife(character->life() + lifegained);
+      }
+      game->getUI()->announce("The princess is moved by your prowess and decides to tag along some more!");
+    }
+    else {
+      game->getUI()->announce("The princess is disappointed with your decision, but you have gained 3 gold pieces!");
+      character->setGold(character->gold() + 3);
+    }
+  }
+  else {
+    game->getUI()->announce("You have arrived at the Castle. The royal doctor comes to treat some of your wounds.");
+    if (character->lifeLost() > 0) {
+      character->setLife(character->life() + 1);
+    }
+  }
 }
 
 string PlainsOfPerilTile::getTitle() const { return "Plains of Peril"; }
